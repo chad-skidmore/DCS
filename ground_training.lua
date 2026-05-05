@@ -46,7 +46,7 @@ _SETTINGS:SetMenutextShort(true) -- shorter menus for VR
 
 --BORDERS
 local BlueBorderZones = ZONE_POLYGON:New("Blue Border",GROUP:FindByName("BlueBorder"))        --Core.Zone#ZONE
---if BlueDebug then BlueBorderZones:DrawZone(-1, {0,0,1} , 1, {0,0,1}) end
+if BlueDebug then BlueBorderZones:DrawZone(-1, {0,0,1} , 1, {0,0,1}) end
 local RedBorderZones = ZONE_POLYGON:New("Red Border",GROUP:FindByName("RedBorder"))           --Core.Zone#ZONE
 local ConflictZones = SET_ZONE:New():FilterPrefixes("ConflictZone"):FilterOnce()              --#SET_ZONE
 --local RedAttackZones = SET_ZONE:New():FilterPrefixes("RedAttackZone"):FilterOnce()
@@ -116,7 +116,15 @@ end
 US.Squad.Nellis={}
 
 --F15s for various tasks
-US.Squad.Nellis.fsq02=SQUADRON:New("F15s", 10, "F15s Nellis") --Ops.Squadron#SQUADRON
+US.Squad.Nellis.fsq01=SQUADRON:New("F15Es", 10, "F15Es Nellis") --Ops.Squadron#SQUADRON
+US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.BAI, AUFTRAG.Type.BOMBING, AUFTRAG.Type.BOMBRUNWAY, AUFTRAG.Type.GCICAS, AUFTRAG.Type.STRIKE}, 100)
+US.Squad.Nellis.fsq01:SetMissionRange(500)
+US.Squad.Nellis.fsq01:SetSkill(AI.Skill.EXCELLENT)
+US.Squad.Nellis.fsq01:SetFuelLowRefuel(true)
+US.Squad.Nellis.fsq01:SetFuelLowThreshold(35)
+US.Squad.Nellis.fsq01:SetTurnoverTime(10,15)
+
+US.Squad.Nellis.fsq02=SQUADRON:New("F15Cs", 10, "F15Cs Nellis") --Ops.Squadron#SQUADRON
 US.Squad.Nellis.fsq02:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
 US.Squad.Nellis.fsq02:SetMissionRange(500)
 US.Squad.Nellis.fsq02:SetSkill(AI.Skill.EXCELLENT)
@@ -159,11 +167,11 @@ US.Squad.Nellis.esqE3:SetRadio(255)
 US.Squad.Nellis.esqE3:SetCallsign(CALLSIGN.AWACS.Darkstar,1)
 
 --Apaches Nellis
-US.Squad.Nellis.Helos=SQUADRON:New("Apaches", 20, "Apaches Nellis") --Ops.Squadron#SQUADRON
-US.Squad.Nellis.Helos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5}, 100)
-US.Squad.Nellis.Helos:SetFuelLowThreshold(0.1)
-US.Squad.Nellis.Helos:SetTurnoverTime(10,20)
-US.Squad.Nellis.Helos:SetSkill(AI.Skill.AVERAGE)
+US.Squad.Nellis.AtkHelos=SQUADRON:New("Apaches", 20, "Apaches Nellis") --Ops.Squadron#SQUADRON
+US.Squad.Nellis.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5}, 100)
+US.Squad.Nellis.AtkHelos:SetFuelLowThreshold(0.1)
+US.Squad.Nellis.AtkHelos:SetTurnoverTime(10,20)
+US.Squad.Nellis.AtkHelos:SetSkill(AI.Skill.AVERAGE)
 
 
 
@@ -175,7 +183,7 @@ end
 
 	  
 --Add Payloads
-local F15sLoadout=US.Wing.Nellis:NewPayload(GROUP:FindByName("F15s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
+local F15sLoadout=US.Wing.Nellis:NewPayload(GROUP:FindByName("F15Cs"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
 US.Wing.Nellis:NewPayload("E3",-1,{AUFTRAG.Type.AWACS},100)
 US.Wing.Nellis:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
 
@@ -266,11 +274,11 @@ US.Squad.Creech.fsq02:SetFuelLowThreshold(35)
 US.Squad.Creech.fsq02:SetTurnoverTime(10,15)
 
 --Apaches Creech
-US.Squad.Creech.Helos=SQUADRON:New("DAPs", 20, "DAPs Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.Helos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 100)
-US.Squad.Creech.Helos:SetFuelLowThreshold(0.1)
-US.Squad.Creech.Helos:SetTurnoverTime(10,20)
-US.Squad.Creech.Helos:SetSkill(AI.Skill.EXCELLENT)
+US.Squad.Creech.AtkHelos=SQUADRON:New("DAPs", 20, "DAPs Creech") --Ops.Squadron#SQUADRON
+US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 100)
+US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
+US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
+US.Squad.Creech.AtkHelos:SetSkill(AI.Skill.EXCELLENT)
 
 
 -- Add Squads to Creech Airwing
@@ -370,7 +378,7 @@ end
 
 for _,zone in pairs(Zones) do
 	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
-	Patrol:AssignCohort(US.Squad.Nellis.Helos)
+	Patrol:AssignCohort(US.Squad.Nellis.AtkHelos)
 	Patrol:SetRepeat(99)
 	BlueChief:AddMission(Patrol)
 end
