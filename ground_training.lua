@@ -479,6 +479,93 @@ local BlueChiefMenu4 = MENU_MISSION_COMMAND:New("Shell RTB", BlueChiefMenu, Canc
 	  
 	  
 	  
+
+
+
+
+
+
+
+-- +-----------------------------+
+-- |     CONFIGURE RED CHIEF    |
+-- +-----------------------------+ 
+--Logistics Zones
+local RedLogisticsZones = {}
+-- RedLogisticsZones.TexacoZone= ZONE:New("TexacoZone")
+-- RedLogisticsZones.ShellZone= ZONE:New("ShellZone")
+-- RedLogisticsZones.AwacsZone= ZONE:New("AwacsZone")
+-- RedLogisticsZones.DroneZone= ZONE:New("DroneZone")
+
+if RedDebug then
+	for _,zone in pairs(RedLogisticsZones) do
+		zone:DrawZone(-1, {0,0,1})
+	end
+end
+
+local RedIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.RED):FilterStart()
+local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
+
+RedChief:SetBorderZones(RedBorderZones)
+RedChief:SetDefcon(CHIEF.DEFCON.GREEN)
+RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+RedChief:SetThreatLevelRange(1, 1000)
+
+if RedDebug then
+	RedChief:SetVerbosity(RedVerbosity)
+	RedChief:SetClusterAnalysis(true,true)   -- Enable Intel clusters and markers
+	RedChief:SetTacticalOverviewOn()
+end
+
+BASE:I("----------------------------------------RED CHIEF SET-------------------------------------------------")
+trigger.action.outText('RED CHIEF LOADED', 10)
+
+-- Red side.
+local RED={}
+RED.Wing={}--Ops.AirWing#AIRWING
+RED.Squad={}--Ops.Squadron#SQUADRON
+RED.Fleet={}--Ops.Fleet#FLEET
+RED.Flotilla={}--Ops.Flotilla#FLOTILLA
+RED.Brigade={}--Ops.Brigade#BRIGADE
+
+
+
+
+
+
+
+
+
+
+
+
+-- +-----------------------------+
+-- |       RED ACTIVATION       |
+-- +-----------------------------+
+-- Add squadrons to airwing.
+for _,Wing in pairs(RED.Wing) do
+	RedChief:AddAirwing(Wing)
+
+	if RedDebug then
+		Wing:SetVerbosity(RedVerbosity)
+		Wing:SetMarker(true)
+	end
+end
+
+for _,Brigade in pairs(RED.Brigade) do
+	RedChief:AddBrigade(Brigade)
+	if RedDebug then
+		Brigade:SetVerbosity(RedVerbosity)
+		Brigade:SetMarker(true)
+	end
+end
+
+RedChief:__Start(10)
+
+
+
+
+
+
 trigger.action.outText('MISSION FILE: GROUND TRAINING...LOADED', 5)
 BASE:I("----------------------------------------MISSION LOADED-------------------------------------------------")
 
