@@ -529,12 +529,59 @@ RED.Brigade={}--Ops.Brigade#BRIGADE
 
 
 
+BASE:I("----------------------------------------RED TONOPAH AIRWING LOADING-------------------------------------------------")
+--Set Up RED Airwing
+RED.Wing.Tonopah = AIRWING:New("Tonopah", "Tonopah") --Ops.AirWing#AIRWING
 
+if RedDebug then
+	RED.Wing.Tonopah:SetVerbosity(RedVerbosity)
+	RED.Wing.Tonopah:SetMarker(true)
+end
 
+--Add Squadrons 
+RED.Squad.Tonopah={}
 
+--Hinds Tonopah
+RED.Squad.Tonopah.AtkHelos=SQUADRON:New("Hinds", 20, "Hinds Tonopah") --Ops.Squadron#SQUADRON
+RED.Squad.Tonopah.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5}, 100)
+RED.Squad.Tonopah.AtkHelos:SetFuelLowThreshold(0.1)
+RED.Squad.Tonopah.AtkHelos:SetTurnoverTime(10,20)
+RED.Squad.Tonopah.AtkHelos:SetSkill(AI.Skill.AVERAGE)
 
+-- Add Squads to Tonopah Airwing
+for _,squad in pairs(RED.Squad.Tonopah) do
+	RED.Wing.Tonopah:AddSquadron(squad)
+end
 
+if RedDebug then
+	--- Display mission status on screen.
+	local function MissionStatus()
 
+		local text="Tonopah Missions:"
+		for _,_mission in pairs(RED.Wing.Tonopah.missionqueue) do
+			local m=_mission --Ops.Auftrag#AUFTRAG
+			text=text..string.format("- %s %s %s*%d/%d [%d %%]  (%s*%d/%d)",
+			m:GetName(), m:GetState():upper(), m:GetTargetName(), m:CountMissionTargets(), m:GetTargetInitialNumber(), m:GetTargetDamage(), m:GetType(), m:CountOpsGroups(), m:GetNumberOfRequiredAssets())
+		end
+
+		-- Payloads
+		text=text.."Available Payloads:"
+		for _,aname in pairs(AUFTRAG.Type) do
+			local n=RED.Wing.Tonopah:CountPayloadsInStock({aname})
+			if n>0 then
+				text=text..string.format("%s %d", aname, n)
+			end
+		end
+
+		-- Info message to all.
+		MESSAGE:New(text, 25):ToAll()
+	end
+
+	-- Display primary and secondary mission status every 60 seconds.
+	TIMER:New(MissionStatus):Start(5, 30)
+end
+
+BASE:I("----------------------------------------TONOPAH AIRWING LOADED-------------------------------------------------")
 
 
 
