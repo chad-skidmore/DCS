@@ -531,7 +531,7 @@ RED.Brigade={}--Ops.Brigade#BRIGADE
 
 BASE:I("----------------------------------------RED TONOPAH AIRWING LOADING-------------------------------------------------")
 --Set Up RED Airwing
-RED.Wing.Tonopah = AIRWING:New("Tonopah", "Tonopah") --Ops.AirWing#AIRWING
+RED.Wing.Tonopah = AIRWING:New("Tonopah Test Range Airfield", "Tonopah Test Range Airfield") --Ops.AirWing#AIRWING
 
 if RedDebug then
 	RED.Wing.Tonopah:SetVerbosity(RedVerbosity)
@@ -583,7 +583,21 @@ end
 
 BASE:I("----------------------------------------TONOPAH AIRWING LOADED-------------------------------------------------")
 
+local RedZones = {}
+RedZones.TonopahApproachSE = ZONE:New("TonopahApproachSE")
 
+if RedDebug then
+	for _,zone in pairs(Zones) do
+		zone:DrawZone(-1, {0,0,1})
+	end
+end
+
+for _,zone in pairs(RedZones) do
+	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
+	Patrol:AssignCohort(RED.Squad.Tonopah.AtkHelos)
+	Patrol:SetRepeat(99)
+	RedChief:AddMission(Patrol)
+end
 
 -- +-----------------------------+
 -- |       RED ACTIVATION       |
@@ -611,7 +625,10 @@ RedChief:__Start(10)
 
 
 
-
+-- HoundTTS.Transmit("Bogey, bullseye 270 for 15",
+--     { freqs = "262.0", coalition = 2, name = "GCI" },
+--     { provider = "piper", voice = "en_GB_cori-high" }
+-- )
 
 trigger.action.outText('MISSION FILE: GROUND TRAINING...LOADED', 5)
 BASE:I("----------------------------------------MISSION LOADED-------------------------------------------------")
