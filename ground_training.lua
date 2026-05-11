@@ -294,7 +294,7 @@ end
 
 local F16sGroundLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sGround"), -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.STRIKE}, 100)
 local F16sSEADoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sSEAD"), -1, {AUFTRAG.Type.SEAD}, 100)
-local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sAir"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.Intercept, AUFTRAG.Type.ALERT5}, 100)
+--local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sAir"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.Intercept, AUFTRAG.Type.ALERT5}, 100)
 US.Wing.Creech:NewPayload("DAPs",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
 
 
@@ -608,11 +608,11 @@ end
 RED.Platoon.Tonopah={}
 
 --Transports Tonopah
-RED.Platoon.Tonopah.Trucks=PLATOON:New("Transports", "Transports Tonopah") --Ops.Platoon#PLATOON
-RED.Platoon.Tonopah.Trucks:AddMissionCapability({AUFTRAG.Type.TRANSPORT}, 100)
-RED.Platoon.Tonopah.Trucks:SetSkill(AI.Skill.AVERAGE)	
-RED.Platoon.Tonopah.Trucks:SetTransport(20, 10, 1000, 5000, 10000)
-RED.Platoon.Tonopah.Trucks :SetTurnoverTime(10,20)
+-- RED.Platoon.Tonopah.Trucks = PLATOON:New("Transports", 6,"Transports Tonopah") --Ops.Platoon#PLATOON
+-- RED.Platoon.Tonopah.Trucks:AddMissionCapability({AUFTRAG.Type.CARGOTRANSPORT}, 100)
+-- RED.Platoon.Tonopah.Trucks:SetSkill(AI.Skill.AVERAGE)	
+-- RED.Platoon.Tonopah.Trucks:SetTransport(20, 10, 1000, 5000, 10000)
+-- RED.Platoon.Tonopah.Trucks:SetTurnoverTime(10,20)
 
 
 
