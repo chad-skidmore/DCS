@@ -276,14 +276,25 @@ US.Squad.Creech.fsq02:SetFuelLowRefuel(true)
 US.Squad.Creech.fsq02:SetFuelLowThreshold(35)
 US.Squad.Creech.fsq02:SetTurnoverTime(10,15)
 US.Squad.Creech.fsq02:SetCallsign(10,1)
+US.Squad.Creech.fsq02:SetEPLRS(true)
 
---Apaches Creech
+--Blackhawks Creech
 US.Squad.Creech.AtkHelos=SQUADRON:New("DAPs", 20, "DAPs Creech") --Ops.Squadron#SQUADRON
 US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 100)
 US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Creech.AtkHelos:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.AtkHelos:SetCallsign(14,1)
+US.Squad.Creech.AtkHelos:SetEPLRS(true)
+
+--Drones Creech
+US.Squad.Creech.Drones=SQUADRON:New("Drones", 20, "Drones Creech") --Ops.Squadron#SQUADRON
+US.Squad.Creech.Drones:AddMissionCapability({AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE}, 100)
+US.Squad.Creech.Drones:SetFuelLowThreshold(0.1)
+US.Squad.Creech.Drones:SetTurnoverTime(10,20)
+US.Squad.Creech.Drones:SetSkill(AI.Skill.EXCELLENT)
+US.Squad.Creech.Drones:SetCallsign(14,1)
+US.Squad.Creech.Drones:SetEPLRS(true)
 
 
 -- Add Squads to Creech Airwing
@@ -364,26 +375,39 @@ BASE:I("----------------------------------------CREECH AIRWING LOADED-----------
 
 
 -- +-----------------------------+
--- |       Nellis PATROLS     |
+-- |       Nellis & Creech PATROLS     |
 -- +-----------------------------+  
 
 local Zones = {}
-Zones.VegasApproachWest = ZONE:New("VegasApproachWest")                 --Core.Zone#ZONE
-Zones.VegasApproachNorth= ZONE:New("VegasApproachNorth")              --Core.Zone#ZONE
-Zones.CreechApproachNW= ZONE:New("CreechApproachNW")                        --Core.Zone#ZONE
-Zones.CreechApproachWest= ZONE:New("CreechApproachWest")                  --Core.Zone#ZONE
+Zones.Nellis = {}
+Zones.Creech = {}
+
+Zones.Nellis.VegasApproachWest = ZONE:New("VegasApproachWest")                 --Core.Zone#ZONE
+Zones.Nellis.VegasApproachNorth= ZONE:New("VegasApproachNorth")              --Core.Zone#ZONE
+Zones.Creech.CreechApproachNW= ZONE:New("CreechApproachNW")                        --Core.Zone#ZONE
+Zones.Creech.CreechApproachWest= ZONE:New("CreechApproachWest")                  --Core.Zone#ZONE
 --Zones.DubaiPatriotSite1= ZONE:New("DubaiPatriotSite1")                    --Core.Zone#ZONE
 --Zones.DubaiPatriotSite2= ZONE:New("DubaiPatriotSite2")                    --Core.Zone#ZONE
 
 if BlueDebug then
-	for _,zone in pairs(Zones) do
+	for _,zone in pairs(Zones.Nellis) do
+		zone:DrawZone(-1, {0,0,1})
+	end
+	for _,zone in pairs(Zones.Creech) do
 		zone:DrawZone(-1, {0,0,1})
 	end
 end
 
-for _,zone in pairs(Zones) do
+for _,zone in pairs(Zones.Nellis) do
 	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
 	Patrol:AssignCohort(US.Squad.Nellis.AtkHelos)
+	Patrol:SetRepeat(99)
+	BlueChief:AddMission(Patrol)
+end
+
+for _,zone in pairs(Zones.Creech) do
+	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
+	Patrol:AssignCohort(US.Squad.Creech.AtkHelos)
 	Patrol:SetRepeat(99)
 	BlueChief:AddMission(Patrol)
 end
@@ -397,10 +421,15 @@ end
 BASE:I("----------------------------------------BLUE CHIEF MISSIONS-------------------------------------------------")
 
 --AWACS
-local BlueAWACS = AUFTRAG:NewAWACS(BlueLogisticsZones.AwacsZone:GetCoordinate(), 30000, UTILS.KnotsToAltKIAS(400,30000), 180, 20)
+local BlueAWACS = AUFTRAG:NewAWACS(BlueLogisticsZones.AwacsZone:GetCoordinate(), 30000, 300, 180, 20)
       BlueAWACS:SetRepeat(99)
       BlueAWACS:SetName("Blue AWACS")
       BlueChief:AddMission(BlueAWACS)
+
+local BlueDrone = AUFTRAG:NewRECON(BlueLogisticsZones.DroneZone:GetCoordinate(), 300, 21000, true, false)
+	BlueDrone:SetRepeat(99)
+	BlueDrone:SetName("Blue Drone")
+	BlueChief:AddMission(BlueDrone)
 
 --TANKER
 -- local RedTanker1 = AUFTRAG:NewTANKER(RedLogisticsZones.RedTankerZone:GetCoordinate(), 20000, 275, 90, 25, 1)
@@ -481,9 +510,6 @@ local BlueChiefMenu2 = MENU_MISSION_COMMAND:New("Texaco RTB", BlueChiefMenu, Can
 local BlueChiefMenu3 = MENU_MISSION_COMMAND:New("Launch Shell", BlueChiefMenu, LaunchShell)--#MENU
 local BlueChiefMenu4 = MENU_MISSION_COMMAND:New("Shell RTB", BlueChiefMenu, CancelShell)--#MENU
 
-	  
-	  
-	  
 
 
 
