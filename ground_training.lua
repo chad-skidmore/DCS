@@ -433,6 +433,11 @@ local BlueDrone = AUFTRAG:NewRECON(BlueLogisticsZones.DroneZone:GetCoordinate(),
 	BlueDrone:SetName("Blue Drone")
 	BlueChief:AddMission(BlueDrone)
 
+local BlueCreechCAP = AUFTRAG:NewCAP(Zones.Creech.CreechCAP, 20000, 300, nil, 180, 20)
+	BlueCreechCAP:SetRepeat(99)
+	BlueCreechCAP:SetName("Blue Creech CAP")
+	BlueChief:AddMision(BlueCreechCAP)
+
 --TANKER
 -- local RedTanker1 = AUFTRAG:NewTANKER(RedLogisticsZones.RedTankerZone:GetCoordinate(), 20000, 275, 90, 25, 1)
 --       RedTanker1:SetRepeat(99)
