@@ -47,8 +47,11 @@ _SETTINGS:SetMenutextShort(true) -- shorter menus for VR
 --BORDERS
 local BlueBorderZones = ZONE_POLYGON:New("Blue Border",GROUP:FindByName("BlueBorder"))        --Core.Zone#ZONE
 if BlueDebug then BlueBorderZones:DrawZone(-1, {0,0,1} , 1, {0,0,1}) end
-local RedBorderZones = ZONE_POLYGON:New("Red Border",GROUP:FindByName("RedBorder"))           --Core.Zone#ZONE
+local RedBorderZones = ZONE_POLYGON:New("Red Border",GROUP:FindByName("RedBorder"))
+if RedDebug then RedBorderZones:DrawZone(-1, {1,0,0} , 1, {1,0,0}) end           --Core.Zone#ZONE
 local ConflictZones = SET_ZONE:New():FilterPrefixes("ConflictZone"):FilterOnce()              --#SET_ZONE
+if BlueDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
+if RedDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
 --local RedAttackZones = SET_ZONE:New():FilterPrefixes("RedAttackZone"):FilterOnce()
 
 
@@ -276,7 +279,7 @@ US.Squad.Creech.fsq02:SetFuelLowRefuel(true)
 US.Squad.Creech.fsq02:SetFuelLowThreshold(35)
 US.Squad.Creech.fsq02:SetTurnoverTime(10,15)
 US.Squad.Creech.fsq02:SetCallsign(10,1)
-US.Squad.Creech.fsq02:SetEPLRS(true)
+--US.Squad.Creech.fsq02:SetEPLRS(true)
 
 --Blackhawks Creech
 US.Squad.Creech.AtkHelos=SQUADRON:New("DAPs", 20, "DAPs Creech") --Ops.Squadron#SQUADRON
@@ -285,7 +288,7 @@ US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Creech.AtkHelos:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.AtkHelos:SetCallsign(14,1)
-US.Squad.Creech.AtkHelos:SetEPLRS(true)
+--US.Squad.Creech.AtkHelos:SetEPLRS(true)
 
 --Drones Creech
 US.Squad.Creech.Drones=SQUADRON:New("Drones", 20, "Drones Creech") --Ops.Squadron#SQUADRON
@@ -294,7 +297,7 @@ US.Squad.Creech.Drones:SetFuelLowThreshold(0.1)
 US.Squad.Creech.Drones:SetTurnoverTime(10,20)
 US.Squad.Creech.Drones:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.Drones:SetCallsign(14,1)
-US.Squad.Creech.Drones:SetEPLRS(true)
+--US.Squad.Creech.Drones:SetEPLRS(true)
 
 
 -- Add Squads to Creech Airwing
@@ -305,8 +308,10 @@ end
 
 local F16sGroundLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sGround"), -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.STRIKE}, 100)
 local F16sSEADoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sSEAD"), -1, {AUFTRAG.Type.SEAD}, 100)
---local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sAir"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.Intercept, AUFTRAG.Type.ALERT5}, 100)
+--local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.Intercept, AUFTRAG.Type.ALERT5}, 100)
+local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
 US.Wing.Creech:NewPayload("DAPs",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
+US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE},100)
 
 
 --ASSIGN ESCORTS
@@ -381,12 +386,14 @@ BASE:I("----------------------------------------CREECH AIRWING LOADED-----------
 local Zones = {}
 Zones.Nellis = {}
 Zones.Creech = {}
+Zones.Tonopah = {}
 
 Zones.Nellis.VegasApproachWest = ZONE:New("VegasApproachWest")                 --Core.Zone#ZONE
 Zones.Nellis.VegasApproachNorth= ZONE:New("VegasApproachNorth")              --Core.Zone#ZONE
 Zones.Creech.CreechApproachNW= ZONE:New("CreechApproachNW")                        --Core.Zone#ZONE
 Zones.Creech.CreechApproachWest= ZONE:New("CreechApproachWest")                  --Core.Zone#ZONE
 Zones.Creech.CreechCAP = ZONE:New("CreechCAP")
+Zones.Tonopah.TonopahCAP = ZONE:New("TonopahCAP")
 
 --Zones.DubaiPatriotSite1= ZONE:New("DubaiPatriotSite1")                    --Core.Zone#ZONE
 --Zones.DubaiPatriotSite2= ZONE:New("DubaiPatriotSite2")                    --Core.Zone#ZONE
@@ -433,10 +440,26 @@ local BlueDrone = AUFTRAG:NewRECON(BlueLogisticsZones.DroneZone:GetCoordinate(),
 	BlueDrone:SetName("Blue Drone")
 	BlueChief:AddMission(BlueDrone)
 
-local BlueCreechCAP = AUFTRAG:NewCAP(Zones.Creech.CreechCAP, 20000, 300, nil, 180, 20)
+local BlueCreechCAP = AUFTRAG:NewCAP(Zones.Creech.CreechCAP, 20000, 300, Zones.Creech.CreechCAP:GetCoordinate(), 180, 20)
 	BlueCreechCAP:SetRepeat(99)
 	BlueCreechCAP:SetName("Blue Creech CAP")
-	BlueChief:AddMision(BlueCreechCAP)
+	BlueChief:AddMission(BlueCreechCAP)
+
+local TexacoAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.TexacoZone:GetCoordinate(),20000,UTILS.KnotsToAltKIAS(250,20000),270,25,1)
+	TexacoAuftrag:AssignCohort(US.Squad.Nellis.tsqTEX)
+	TexacoAuftrag:SetRadio(251)
+	TexacoAuftrag:SetTACAN(51, "TEX")
+	TexacoAuftrag:SetName("Texaco Auftrag")
+	TexacoAuftrag:SetRepeat(99)
+	BlueChief:AddMission(TexacoAuftrag)
+
+local ShellAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.ShellZone:GetCoordinate(),22000,UTILS.KnotsToAltKIAS(250,22000),270,25,1)
+	ShellAuftrag:AssignCohort(US.Squad.Nellis.tsqSHL)
+	ShellAuftrag:SetRadio(256)
+	ShellAuftrag:SetTACAN(56, "SHL")
+	ShellAuftrag:SetName("Shell Auftrag")
+	ShellAuftrag:SetRepeat(99)
+	BlueChief:AddMission(ShellAuftrag)
 
 --TANKER
 -- local RedTanker1 = AUFTRAG:NewTANKER(RedLogisticsZones.RedTankerZone:GetCoordinate(), 20000, 275, 90, 25, 1)
@@ -587,13 +610,25 @@ RED.Squad.Tonopah.AtkHelos:SetFuelLowThreshold(0.1)
 RED.Squad.Tonopah.AtkHelos:SetTurnoverTime(10,20)
 RED.Squad.Tonopah.AtkHelos:SetSkill(AI.Skill.AVERAGE)
 
+--SU27s for various tasks
+RED.Squad.Tonopah.SU27s=SQUADRON:New("SU27s", 10, "SU27s Tonopah") --Ops.Squadron#SQUADRON
+RED.Squad.Tonopah.SU27s:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
+RED.Squad.Tonopah.SU27s:SetMissionRange(500)
+RED.Squad.Tonopah.SU27s:SetSkill(AI.Skill.AVERAGE)
+RED.Squad.Tonopah.SU27s:SetFuelLowRefuel(true)
+RED.Squad.Tonopah.SU27s:SetFuelLowThreshold(35)
+RED.Squad.Tonopah.SU27s:SetTurnoverTime(10,15)
+
+
 -- Add Squads to Tonopah Airwing
 for _,squad in pairs(RED.Squad.Tonopah) do
 	RED.Wing.Tonopah:AddSquadron(squad)
 end
 
 -- Add Payloads
-RED.Wing.Tonopah:NewPayload("Hinds",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
+RED.Wing.Tonopah:NewPayload("Hinds", -1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
+RED.Wing.Tonopah:NewPayload("SU27s", -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
+
 
 if RedDebug then
 	--- Display mission status on screen.
@@ -657,7 +692,7 @@ local RedZones = {}
 RedZones.TonopahApproachSE = ZONE:New("TonopahApproachSE")
 
 if RedDebug then
-	for _,zone in pairs(Zones) do
+	for _,zone in pairs(RedZones) do
 		zone:DrawZone(-1, {0,0,1})
 	end
 end
@@ -668,6 +703,13 @@ for _,zone in pairs(RedZones) do
 	Patrol:SetRepeat(99)
 	RedChief:AddMission(Patrol)
 end
+
+
+local RedTonopahCAP = AUFTRAG:NewCAP(Zones.Tonopah.TonopahCAP, 20000, 300, Zones.Tonopah.TonopahCAP:GetCoordinate(), 180, 20)
+	RedTonopahCAP:SetRepeat(99)
+	RedTonopahCAP:SetName("Red Tonopah CAP")
+	RedChief:AddMission(RedTonopahCAP)
+
 
 -- +-----------------------------+
 -- |       RED ACTIVATION       |
