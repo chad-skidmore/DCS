@@ -553,6 +553,9 @@ for _,squad in pairs(RED.Squad.Tonopah) do
 	RED.Wing.Tonopah:AddSquadron(squad)
 end
 
+-- Add Payloads
+RED.Wing.Tonopah:NewPayload("Hinds",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
+
 if RedDebug then
 	--- Display mission status on screen.
 	local function MissionStatus()
@@ -582,6 +585,34 @@ if RedDebug then
 end
 
 BASE:I("----------------------------------------TONOPAH AIRWING LOADED-------------------------------------------------")
+
+
+
+
+
+BASE:I("----------------------------------------RED TONOPAH BRIGADE LOADING-------------------------------------------------")
+RED.Brigade.Tonopah = BRIGADE:New("Tonopah Brigade", "Tonopah Brigade") --Ops.Brigade#BRIGADE
+
+if RedDebug then
+	RED.Brigade.Tonopah:SetVerbosity(RedVerbosity)
+	RED.Brigade.Tonopah:SetMarker(true)
+end
+
+--Add Squadrons 
+RED.Platoon.Tonopah={}
+
+--Transports Tonopah
+RED.Platoon.Tonopah.Trucks=PLATOON:New("Transports", "Transports Tonopah") --Ops.Platoon#PLATOON
+RED.Platoon.Tonopah.Trucks:AddMissionCapability({AUFTRAG.Type.TRANSPORT}, 100)
+RED.Platoon.Tonopah.Trucks:SetSkill(AI.Skill.AVERAGE)	
+RED.Platoon.Tonopah.Trucks:SetTransport(20, 10, 1000, 5000, 10000)
+RED.Platoon.Tonopah.Trucks :SetTurnoverTime(10,20)
+
+
+
+
+
+
 
 local RedZones = {}
 RedZones.TonopahApproachSE = ZONE:New("TonopahApproachSE")
