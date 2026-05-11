@@ -123,6 +123,7 @@ US.Squad.Nellis.fsq01:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Nellis.fsq01:SetFuelLowRefuel(true)
 US.Squad.Nellis.fsq01:SetFuelLowThreshold(35)
 US.Squad.Nellis.fsq01:SetTurnoverTime(10,15)
+US.Squad.Nellis.fsq01:SetCallsign(9,1)
 
 US.Squad.Nellis.fsq02=SQUADRON:New("F15Cs", 10, "F15Cs Nellis") --Ops.Squadron#SQUADRON
 US.Squad.Nellis.fsq02:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
@@ -131,6 +132,7 @@ US.Squad.Nellis.fsq02:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Nellis.fsq02:SetFuelLowRefuel(true)
 US.Squad.Nellis.fsq02:SetFuelLowThreshold(35)
 US.Squad.Nellis.fsq02:SetTurnoverTime(10,15)
+US.Squad.Nellis.fsq02:SetCallsign(4,1)
 
 --Tanker 1
 US.Squad.Nellis.tsqTEX=SQUADRON:New("Texaco", 4, "Texaco Nellis") --Ops.Squadron#SQUADRON
@@ -172,6 +174,7 @@ US.Squad.Nellis.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG
 US.Squad.Nellis.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Nellis.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Nellis.AtkHelos:SetSkill(AI.Skill.AVERAGE)
+US.Squad.Nellis.AtkHelos:SetCallsign(19,1)
 
 
 
@@ -272,6 +275,7 @@ US.Squad.Creech.fsq02:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.fsq02:SetFuelLowRefuel(true)
 US.Squad.Creech.fsq02:SetFuelLowThreshold(35)
 US.Squad.Creech.fsq02:SetTurnoverTime(10,15)
+US.Squad.Creech.fsq02:SetCallsign(10,1)
 
 --Apaches Creech
 US.Squad.Creech.AtkHelos=SQUADRON:New("DAPs", 20, "DAPs Creech") --Ops.Squadron#SQUADRON
@@ -279,6 +283,7 @@ US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG
 US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Creech.AtkHelos:SetSkill(AI.Skill.EXCELLENT)
+US.Squad.Creech.AtkHelos:SetCallsign(14,1)
 
 
 -- Add Squads to Creech Airwing
@@ -526,6 +531,7 @@ RED.Squad={}--Ops.Squadron#SQUADRON
 RED.Fleet={}--Ops.Fleet#FLEET
 RED.Flotilla={}--Ops.Flotilla#FLOTILLA
 RED.Brigade={}--Ops.Brigade#BRIGADE
+RED.Platoon={}
 
 
 
