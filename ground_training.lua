@@ -386,6 +386,8 @@ Zones.Nellis.VegasApproachWest = ZONE:New("VegasApproachWest")                 -
 Zones.Nellis.VegasApproachNorth= ZONE:New("VegasApproachNorth")              --Core.Zone#ZONE
 Zones.Creech.CreechApproachNW= ZONE:New("CreechApproachNW")                        --Core.Zone#ZONE
 Zones.Creech.CreechApproachWest= ZONE:New("CreechApproachWest")                  --Core.Zone#ZONE
+Zones.Creech.CreechCAP = ZONE:New("CreechCAP")
+
 --Zones.DubaiPatriotSite1= ZONE:New("DubaiPatriotSite1")                    --Core.Zone#ZONE
 --Zones.DubaiPatriotSite2= ZONE:New("DubaiPatriotSite2")                    --Core.Zone#ZONE
 
