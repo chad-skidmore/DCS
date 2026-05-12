@@ -99,7 +99,7 @@ US.Squad={}--Ops.Squadron#SQUADRON
 US.Fleet={}--Ops.Fleet#FLEET
 US.Flotilla={}--Ops.Flotilla#FLOTILLA
 US.Brigade={}--Ops.Brigade#BRIGADE
-
+US.Platoon={}
 
 
 
@@ -179,7 +179,13 @@ US.Squad.Nellis.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Nellis.AtkHelos:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Nellis.AtkHelos:SetCallsign(19,1)
 
-
+--Chinooks Nellis
+US.Squad.Nellis.Chinooks=SQUADRON:New("Chinooks", 20, "Chinooks Nellis") --Ops.Squadron#SQUADRON
+US.Squad.Nellis.Chinooks:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
+US.Squad.Nellis.Chinooks:SetFuelLowThreshold(0.1)
+US.Squad.Nellis.Chinooks:SetTurnoverTime(10,20)
+US.Squad.Nellis.Chinooks:SetSkill(AI.Skill.AVERAGE)
+--US.Squad.Nellis.Chinooks:SetCallsign(19,1)
 
 -- Add Squads to Nellis Airwing
 for _,squad in pairs(US.Squad.Nellis) do
@@ -192,7 +198,7 @@ end
 local F15sLoadout=US.Wing.Nellis:NewPayload(GROUP:FindByName("F15Cs"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
 US.Wing.Nellis:NewPayload("E3",-1,{AUFTRAG.Type.AWACS},100)
 US.Wing.Nellis:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
-
+US.Wing.Nellis:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
 
 
 --ASSIGN ESCORTS
@@ -255,9 +261,52 @@ end
 
 
 
-BASE:I("----------------------------------------NELLIS AIRWING LOADED-------------------------------------------------")	  
-	  
-	  
+BASE:I("----------------------------------------NELLIS AIRWING LOADED-------------------------------------------------")
+
+
+
+BASE:I("----------------------------------------NELLIS BRIGADE LOADING-------------------------------------------------")
+US.Brigade.Nellis = BRIGADE:New("Nellis Warehouse", "Nellis Brigade") --Ops.AirWing#AIRWING
+
+if BlueDebug then
+	US.Brigade.Nellis:SetVerbosity(BlueVerbosity)
+	US.Brigade.Nellis:SetMarker(true)
+end
+
+--Add Platoons 
+US.Platoon.Nellis={}
+US.Platoon.Nellis.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", -1, "HIMARS-HE")
+US.Platoon.Nellis.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY
+US.Platoon.Nellis.himarsHe:SetSkill(AI.Skill.AVERAGE)
+
+US.Platoon.Nellis.m270 = PLATOON:New("M270A1-GMLRS", -1, "M270")
+US.Platoon.Nellis.m270:AddMissionCapability(AUFTRAG.Type.ARTY)
+US.Platoon.Nellis.m270:SetSkill(AI.Skill.AVERAGE)
+
+US.Platoon.Nellis.paladin = PLATOON:New("Paladin", -1, "Paladin")
+US.Platoon.Nellis.paladin:AddMissionCapability(AUFTRAG.Type.ARTY)
+US.Platoon.Nellis.paladin:SetSkill(AI.Skill.AVERAGE)
+
+US.Platoon.Nellis.howitzer = PLATOON:New("Howitzer", -1, "Howitzer")
+US.Platoon.Nellis.howitzer:AddMissionCapability(AUFTRAG.Type.ARTY)
+US.Platoon.Nellis.howitzer:SetSkill(AI.Skill.AVERAGE)
+
+
+US.Platoon.Nellis.abrams = PLATOON:New("Abrams", -1, "Abrams")
+US.Platoon.Nellis.abrams:AddMissionCapability(AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK)
+US.Platoon.Nellis.abrams:SetSkill(AI.Skill.AVERAGE)
+
+-- Add Platoons to Nellis Brigade
+for _,platoon in pairs(US.Platoon.Nellis) do
+	US.Brigade.Nellis:AddPlatoon(platoon)
+end
+
+BASE:I("----------------------------------------NELLIS BRIGADE LOADED-------------------------------------------------")
+
+
+
+
+
 BASE:I("----------------------------------------BLUE CREECH AIRWING LOADING-------------------------------------------------")
 --Set Up Blue Airwing
 US.Wing.Creech = AIRWING:New("Creech AFB", "Creech AFB")
@@ -299,6 +348,13 @@ US.Squad.Creech.Drones:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.Drones:SetCallsign(14,1)
 --US.Squad.Creech.Drones:SetEPLRS(true)
 
+--Chinooks Creech
+US.Squad.Creech.Chinooks=SQUADRON:New("Chinooks", 20, "Chinooks Creech") --Ops.Squadron#SQUADRON
+US.Squad.Creech.Chinooks:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
+US.Squad.Creech.Chinooks:SetFuelLowThreshold(0.1)
+US.Squad.Creech.Chinooks:SetTurnoverTime(10,20)
+US.Squad.Creech.Chinooks:SetSkill(AI.Skill.AVERAGE)
+--US.Squad.Creech.Chinooks:SetCallsign(19,1)
 
 -- Add Squads to Creech Airwing
 for _,squad in pairs(US.Squad.Creech) do
@@ -312,6 +368,7 @@ local F16sSEADoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sSEAD"), -1,
 local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
 US.Wing.Creech:NewPayload("DAPs",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
 US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE},100)
+US.Wing.Creech:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
 
 
 --ASSIGN ESCORTS
@@ -445,21 +502,21 @@ local BlueCreechCAP = AUFTRAG:NewCAP(Zones.Creech.CreechCAP, 20000, 300, Zones.C
 	BlueCreechCAP:SetName("Blue Creech CAP")
 	BlueChief:AddMission(BlueCreechCAP)
 
-local TexacoAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.TexacoZone:GetCoordinate(),20000,UTILS.KnotsToAltKIAS(250,20000),270,25,1)
-	TexacoAuftrag:AssignCohort(US.Squad.Nellis.tsqTEX)
-	TexacoAuftrag:SetRadio(251)
-	TexacoAuftrag:SetTACAN(51, "TEX")
-	TexacoAuftrag:SetName("Texaco Auftrag")
-	TexacoAuftrag:SetRepeat(99)
-	BlueChief:AddMission(TexacoAuftrag)
+-- local TexacoAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.TexacoZone:GetCoordinate(),20000,UTILS.KnotsToAltKIAS(250,20000),270,25,1)
+-- 	TexacoAuftrag:AssignCohort(US.Squad.Nellis.tsqTEX)
+-- 	TexacoAuftrag:SetRadio(251)
+-- 	TexacoAuftrag:SetTACAN(51, "TEX")
+-- 	TexacoAuftrag:SetName("Texaco Auftrag")
+-- 	TexacoAuftrag:SetRepeat(99)
+-- 	BlueChief:AddMission(TexacoAuftrag)
 
-local ShellAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.ShellZone:GetCoordinate(),22000,UTILS.KnotsToAltKIAS(250,22000),270,25,1)
-	ShellAuftrag:AssignCohort(US.Squad.Nellis.tsqSHL)
-	ShellAuftrag:SetRadio(256)
-	ShellAuftrag:SetTACAN(56, "SHL")
-	ShellAuftrag:SetName("Shell Auftrag")
-	ShellAuftrag:SetRepeat(99)
-	BlueChief:AddMission(ShellAuftrag)
+-- local ShellAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.ShellZone:GetCoordinate(),22000,UTILS.KnotsToAltKIAS(250,22000),270,25,1)
+-- 	ShellAuftrag:AssignCohort(US.Squad.Nellis.tsqSHL)
+-- 	ShellAuftrag:SetRadio(256)
+-- 	ShellAuftrag:SetTACAN(56, "SHL")
+-- 	ShellAuftrag:SetName("Shell Auftrag")
+-- 	ShellAuftrag:SetRepeat(99)
+-- 	BlueChief:AddMission(ShellAuftrag)
 
 --TANKER
 -- local RedTanker1 = AUFTRAG:NewTANKER(RedLogisticsZones.RedTankerZone:GetCoordinate(), 20000, 275, 90, 25, 1)
@@ -503,7 +560,7 @@ BlueChief:__Start(10)
 -- +-----------------------------+
 
 local function LaunchTexaco()
-	TexacoAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.TexacoZone:GetCoordinate(),20000,UTILS.KnotsToAltKIAS(250,20000),270,25,1)
+	local TexacoAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.TexacoZone:GetCoordinate(),20000,UTILS.KnotsToAltKIAS(250,20000),270,25,1)
 	TexacoAuftrag:AssignCohort(US.Squad.Nellis.tsqTEX)
 	TexacoAuftrag:SetRadio(251)
 	TexacoAuftrag:SetTACAN(51, "TEX")
@@ -540,6 +597,12 @@ local BlueChiefMenu2 = MENU_MISSION_COMMAND:New("Texaco RTB", BlueChiefMenu, Can
 local BlueChiefMenu3 = MENU_MISSION_COMMAND:New("Launch Shell", BlueChiefMenu, LaunchShell)--#MENU
 local BlueChiefMenu4 = MENU_MISSION_COMMAND:New("Shell RTB", BlueChiefMenu, CancelShell)--#MENU
 
+
+-- +-----------------------------+
+-- |   INITIAL TANKERS LAUNCH    |
+-- +-----------------------------+
+LaunchTexaco()
+LaunchShell()
 
 
 
@@ -735,6 +798,33 @@ end
 RedChief:__Start(10)
 
 
+
+
+
+
+
+--- Function called when the DEFCON changes.
+function BlueChief:OnAfterDefconChange(From, Event, To, Defcon)
+  local text=string.format("Blue changed DEFCON to %s", Defcon)
+  MESSAGE:New(text, 120):ToAll()    
+end
+
+function RedChief:OnAfterDefconChange(From, Event, To, Defcon)
+  local text=string.format("Red changed DEFCON to %s", Defcon)
+  MESSAGE:New(text, 120):ToAll()    
+end
+
+--- Function called when the STRATEGY changes.
+function BlueChief:OnAfterStrategyChange(From, Event, To, Strategy)
+  local text=string.format("Blue strategy changd to %s", Strategy)
+  MESSAGE:New(text, 120):ToAll()
+end
+
+--- Function called when the STRATEGY changes.
+function RedChief:OnAfterStrategyChange(From, Event, To, Strategy)
+  local text=string.format("Red strategy changd to %s", Strategy)
+  MESSAGE:New(text, 120):ToAll()
+end
 
 
 -- HoundTTS.Transmit("Bogey, bullseye 270 for 15",
