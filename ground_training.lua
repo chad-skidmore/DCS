@@ -127,6 +127,7 @@ US.Squad.Nellis.fsq01:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Nellis.fsq01:SetFuelLowRefuel(true)
 US.Squad.Nellis.fsq01:SetFuelLowThreshold(35)
 US.Squad.Nellis.fsq01:SetTurnoverTime(10,15)
+US.Squad.Nellis.fsq01:SetRadio(255)
 US.Squad.Nellis.fsq01:SetCallsign(9,1)
 
 US.Squad.Nellis.fsq02=SQUADRON:New("F15Cs", 10, "F15Cs Nellis") --Ops.Squadron#SQUADRON
@@ -136,6 +137,7 @@ US.Squad.Nellis.fsq02:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Nellis.fsq02:SetFuelLowRefuel(true)
 US.Squad.Nellis.fsq02:SetFuelLowThreshold(35)
 US.Squad.Nellis.fsq02:SetTurnoverTime(10,15)
+US.Squad.Nellis.fsq02:SetRadio(255)
 US.Squad.Nellis.fsq02:SetCallsign(4,1)
 
 --Tanker 1
@@ -179,6 +181,7 @@ US.Squad.Nellis.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Nellis.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Nellis.AtkHelos:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Nellis.AtkHelos:SetCallsign(19,1)
+US.Squad.Nellis.AtkHelos:SetRadio(255)
 
 --Chinooks Nellis
 US.Squad.Nellis.Chinooks=SQUADRON:New("Chinooks", 20, "Chinooks Nellis") --Ops.Squadron#SQUADRON
@@ -186,6 +189,7 @@ US.Squad.Nellis.Chinooks:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFT
 US.Squad.Nellis.Chinooks:SetFuelLowThreshold(0.1)
 US.Squad.Nellis.Chinooks:SetTurnoverTime(10,20)
 US.Squad.Nellis.Chinooks:SetSkill(AI.Skill.AVERAGE)
+US.Squad.Nellis.Chinooks:SetRadio(255)
 --US.Squad.Nellis.Chinooks:SetCallsign(19,1)
 
 -- Add Squads to Nellis Airwing
@@ -277,29 +281,63 @@ end
 --Add Platoons 
 US.Platoon.Nellis={}
 US.Platoon.Nellis.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", -1, "HIMARS-HE")
-US.Platoon.Nellis.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY
+US.Platoon.Nellis.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Nellis.himarsHe:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Nellis.himarsHe:SetRadio(255)
 
 US.Platoon.Nellis.m270 = PLATOON:New("M270A1-GMLRS", -1, "M270")
 US.Platoon.Nellis.m270:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Nellis.m270:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Nellis.m270:SetRadio(255)
 
 US.Platoon.Nellis.paladin = PLATOON:New("Paladin", -1, "Paladin")
 US.Platoon.Nellis.paladin:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Nellis.paladin:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Nellis.paladin:SetRadio(255)
 
 US.Platoon.Nellis.howitzer = PLATOON:New("Howitzer", -1, "Howitzer")
 US.Platoon.Nellis.howitzer:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Nellis.howitzer:SetSkill(AI.Skill.AVERAGE)
-
+US.Platoon.Nellis.howitzer:SetRadio(255)
 
 US.Platoon.Nellis.abrams = PLATOON:New("Abrams", -1, "Abrams")
-US.Platoon.Nellis.abrams:AddMissionCapability(AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK)
+US.Platoon.Nellis.abrams:AddMissionCapability({AUFTRAG.Type.GROUNDATTACK, AUFTRAG.Type.PATROLZONE}, 100)
 US.Platoon.Nellis.abrams:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Nellis.abrams:SetRadio(255)
 
 -- Add Platoons to Nellis Brigade
 for _,platoon in pairs(US.Platoon.Nellis) do
 	US.Brigade.Nellis:AddPlatoon(platoon)
+end
+
+--US.Platoon.Nellis:NewPayload("Abrams",-1,{AUFTRAG.Type.AWACS, AUFTRAG.Type.PATROLZONE},100)
+
+if BlueDebug then
+	--- Display mission status on screen.
+	local function MissionStatus()
+
+		local text="Nellis Ground Missions:"
+		for _,_mission in pairs(US.Brigade.Nellis.missionqueue) do
+			local m=_mission --Ops.Auftrag#AUFTRAG
+			text=text..string.format("- %s %s %s*%d/%d [%d %%]  (%s*%d/%d)",
+			m:GetName(), m:GetState():upper(), m:GetTargetName(), m:CountMissionTargets(), m:GetTargetInitialNumber(), m:GetTargetDamage(), m:GetType(), m:CountOpsGroups(), m:GetNumberOfRequiredAssets())
+		end
+
+		-- Payloads
+--		text=text.."Available Payloads:"
+--		for _,aname in pairs(AUFTRAG.Type) do
+--			local n=US.Brigade.Nellis:CountPayloadsInStock({aname})
+--			if n>0 then
+--				text=text..string.format("%s %d", aname, n)
+--			end
+--		end
+
+		-- Info message to all.
+		MESSAGE:New(text, 25):ToAll()
+	end
+
+	-- Display primary and secondary mission status every 60 seconds.
+	TIMER:New(MissionStatus):Start(5, 30)
 end
 
 BASE:I("----------------------------------------NELLIS BRIGADE LOADED-------------------------------------------------")
@@ -479,14 +517,16 @@ BASE:I("----------------------------------------Creech BRIGADE LOADED-----------
 
 local Zones = {}
 Zones.Nellis = {}
-Zones.Creech = {}
+Zones.CreechAir = {}
+Zones.CreechGnd = {}
 Zones.Tonopah = {}
 
 Zones.Nellis.VegasApproachWest = ZONE:New("VegasApproachWest")                 --Core.Zone#ZONE
 Zones.Nellis.VegasApproachNorth= ZONE:New("VegasApproachNorth")              --Core.Zone#ZONE
-Zones.Creech.CreechApproachNW= ZONE:New("CreechApproachNW")                        --Core.Zone#ZONE
-Zones.Creech.CreechApproachWest= ZONE:New("CreechApproachWest")                  --Core.Zone#ZONE
-Zones.Creech.CreechCAP = ZONE:New("CreechCAP")
+Zones.CreechAir.CreechApproachNW= ZONE:New("CreechApproachNW")                        --Core.Zone#ZONE
+Zones.CreechAir.CreechApproachWest= ZONE:New("CreechApproachWest")                  --Core.Zone#ZONE
+Zones.CreechAir.CreechCAP = ZONE:New("CreechCAP")
+Zones.CreechGnd.West = ZONE:New("CreechGndWest")
 Zones.Tonopah.TonopahCAP = ZONE:New("TonopahCAP")
 
 --Zones.DubaiPatriotSite1= ZONE:New("DubaiPatriotSite1")                    --Core.Zone#ZONE
@@ -496,7 +536,7 @@ if BlueDebug then
 	for _,zone in pairs(Zones.Nellis) do
 		zone:DrawZone(-1, {0,0,1})
 	end
-	for _,zone in pairs(Zones.Creech) do
+	for _,zone in pairs(Zones.CreechAir) do
 		zone:DrawZone(-1, {0,0,1})
 	end
 end
@@ -508,13 +548,19 @@ for _,zone in pairs(Zones.Nellis) do
 	BlueChief:AddMission(Patrol)
 end
 
-for _,zone in pairs(Zones.Creech) do
+for _,zone in pairs(Zones.CreechAir) do
 	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
 	Patrol:AssignCohort(US.Squad.Creech.AtkHelos)
 	Patrol:SetRepeat(99)
 	BlueChief:AddMission(Patrol)
 end
-	  
+
+for _,zone in pairs(Zones.CreechGnd) do
+	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
+	Patrol:AssignCohort(US.Platoon.Nellis.abrams)
+	Patrol:SetRepeat(99)
+	BlueChief:AddMission(Patrol)
+end
 	  
 
 -- +-----------------------------+
@@ -534,7 +580,7 @@ local BlueDrone = AUFTRAG:NewRECON(BlueLogisticsZones.DroneZone:GetCoordinate(),
 	BlueDrone:SetName("Blue Drone")
 	BlueChief:AddMission(BlueDrone)
 
-local BlueCreechCAP = AUFTRAG:NewCAP(Zones.Creech.CreechCAP, 20000, 300, Zones.Creech.CreechCAP:GetCoordinate(), 180, 20)
+local BlueCreechCAP = AUFTRAG:NewCAP(Zones.CreechAir.CreechCAP, 20000, 300, Zones.CreechAir.CreechCAP:GetCoordinate(), 180, 20)
 	BlueCreechCAP:SetRepeat(99)
 	BlueCreechCAP:SetName("Blue Creech CAP")
 	BlueChief:AddMission(BlueCreechCAP)
