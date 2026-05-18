@@ -21,6 +21,7 @@ if RedDebug or BlueDebug then
 	BASE:TraceLevel(3)
 	BASE:TraceClass("AUFTRAG")
 	BASE:TraceClass("AIRWING")
+	BASE:TraceClass("BRIGADE")
 	BASE:TraceClass("CHIEF")
 end
 
@@ -432,7 +433,43 @@ BASE:I("----------------------------------------CREECH AIRWING LOADED-----------
 
 
 
+BASE:I("----------------------------------------CREECH BRIGADE LOADING-------------------------------------------------")
+US.Brigade.Creech = BRIGADE:New("Creech Warehouse", "Creech Brigade") --Ops.AirWing#AIRWING
 
+if BlueDebug then
+	US.Brigade.Creech:SetVerbosity(BlueVerbosity)
+	US.Brigade.Creech:SetMarker(true)
+end
+
+--Add Platoons 
+US.Platoon.Creech={}
+US.Platoon.Creech.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", -1, "HIMARS-HE")
+US.Platoon.Creech.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY
+US.Platoon.Creech.himarsHe:SetSkill(AI.Skill.AVERAGE)
+
+US.Platoon.Creech.m270 = PLATOON:New("M270A1-GMLRS", -1, "M270")
+US.Platoon.Creech.m270:AddMissionCapability(AUFTRAG.Type.ARTY)
+US.Platoon.Creech.m270:SetSkill(AI.Skill.AVERAGE)
+
+US.Platoon.Creech.paladin = PLATOON:New("Paladin", -1, "Paladin")
+US.Platoon.Creech.paladin:AddMissionCapability(AUFTRAG.Type.ARTY)
+US.Platoon.Creech.paladin:SetSkill(AI.Skill.AVERAGE)
+
+US.Platoon.Creech.howitzer = PLATOON:New("Howitzer", -1, "Howitzer")
+US.Platoon.Creech.howitzer:AddMissionCapability(AUFTRAG.Type.ARTY)
+US.Platoon.Creech.howitzer:SetSkill(AI.Skill.AVERAGE)
+
+
+US.Platoon.Creech.abrams = PLATOON:New("Abrams", -1, "Abrams")
+US.Platoon.Creech.abrams:AddMissionCapability(AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK)
+US.Platoon.Creech.abrams:SetSkill(AI.Skill.AVERAGE)
+
+-- Add Platoons to Creech Brigade
+for _,platoon in pairs(US.Platoon.Creech) do
+	US.Brigade.Creech:AddPlatoon(platoon)
+end
+
+BASE:I("----------------------------------------Creech BRIGADE LOADED-------------------------------------------------")
 
 
 
