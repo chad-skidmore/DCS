@@ -311,6 +311,34 @@ end
 
 --US.Platoon.Nellis:NewPayload("Abrams",-1,{AUFTRAG.Type.AWACS, AUFTRAG.Type.PATROLZONE},100)
 
+if BlueDebug then
+	--- Display mission status on screen.
+	local function MissionStatus()
+
+		local text="Nellis Ground Missions:"
+		for _,_mission in pairs(US.Brigade.Nellis.missionqueue) do
+			local m=_mission --Ops.Auftrag#AUFTRAG
+			text=text..string.format("- %s %s %s*%d/%d [%d %%]  (%s*%d/%d)",
+			m:GetName(), m:GetState():upper(), m:GetTargetName(), m:CountMissionTargets(), m:GetTargetInitialNumber(), m:GetTargetDamage(), m:GetType(), m:CountOpsGroups(), m:GetNumberOfRequiredAssets())
+		end
+
+		-- Payloads
+--		text=text.."Available Payloads:"
+--		for _,aname in pairs(AUFTRAG.Type) do
+--			local n=US.Brigade.Nellis:CountPayloadsInStock({aname})
+--			if n>0 then
+--				text=text..string.format("%s %d", aname, n)
+--			end
+--		end
+
+		-- Info message to all.
+		MESSAGE:New(text, 25):ToAll()
+	end
+
+	-- Display primary and secondary mission status every 60 seconds.
+	TIMER:New(MissionStatus):Start(5, 30)
+end
+
 BASE:I("----------------------------------------NELLIS BRIGADE LOADED-------------------------------------------------")
 
 
