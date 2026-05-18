@@ -300,7 +300,7 @@ US.Platoon.Nellis.howitzer:SetSkill(AI.Skill.AVERAGE)
 US.Platoon.Nellis.howitzer:SetRadio(255)
 
 US.Platoon.Nellis.abrams = PLATOON:New("Abrams", -1, "Abrams")
-US.Platoon.Nellis.abrams:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, AUFTRAG.Type.PATROLZONE)
+US.Platoon.Nellis.abrams:AddMissionCapability({AUFTRAG.Type.GROUNDATTACK, AUFTRAG.Type.PATROLZONE}, 100)
 US.Platoon.Nellis.abrams:SetSkill(AI.Skill.AVERAGE)
 US.Platoon.Nellis.abrams:SetRadio(255)
 
@@ -309,7 +309,7 @@ for _,platoon in pairs(US.Platoon.Nellis) do
 	US.Brigade.Nellis:AddPlatoon(platoon)
 end
 
-US.Platoon.Nellis:NewPayload("abrams",-1,{AUFTRAG.Type.AWACS, AUFTRAG.Type.PATROLZONE},100)
+--US.Platoon.Nellis:NewPayload("Abrams",-1,{AUFTRAG.Type.AWACS, AUFTRAG.Type.PATROLZONE},100)
 
 BASE:I("----------------------------------------NELLIS BRIGADE LOADED-------------------------------------------------")
 
