@@ -130,6 +130,7 @@ US.Squad.Nellis.fsq01:SetFuelLowThreshold(35)
 US.Squad.Nellis.fsq01:SetTurnoverTime(10,15)
 US.Squad.Nellis.fsq01:SetRadio(255)
 US.Squad.Nellis.fsq01:SetCallsign(9,1)
+US.Squad.Nellis.fsq01:SetTakeoffHot()
 
 US.Squad.Nellis.fsq02=SQUADRON:New("F15Cs", 10, "F15Cs Nellis") --Ops.Squadron#SQUADRON
 US.Squad.Nellis.fsq02:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
@@ -140,6 +141,7 @@ US.Squad.Nellis.fsq02:SetFuelLowThreshold(35)
 US.Squad.Nellis.fsq02:SetTurnoverTime(10,15)
 US.Squad.Nellis.fsq02:SetRadio(255)
 US.Squad.Nellis.fsq02:SetCallsign(4,1)
+US.Squad.Nellis.fsq02:SetTakeoffHot()
 
 --Tanker 1
 US.Squad.Nellis.tsqTEX=SQUADRON:New("Texaco", 4, "Texaco Nellis") --Ops.Squadron#SQUADRON
@@ -152,6 +154,7 @@ US.Squad.Nellis.tsqTEX:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Nellis.tsqTEX:SetRadio(251)
 US.Squad.Nellis.tsqTEX:SetCallsign(CALLSIGN.Tanker.Texaco,1)
 US.Squad.Nellis.tsqTEX:AddTacanChannel(51,51)
+US.Squad.Nellis.tsqTEX:SetTakeoffHot()
 
 --Tanker 2
 US.Squad.Nellis.tsqSHL=SQUADRON:New("Shell", 4, "Shell Nellis") --Ops.Squadron#SQUADRON
@@ -164,6 +167,7 @@ US.Squad.Nellis.tsqSHL:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Nellis.tsqSHL:SetRadio(256)
 US.Squad.Nellis.tsqSHL:SetCallsign(CALLSIGN.Tanker.Shell,1)
 US.Squad.Nellis.tsqSHL:AddTacanChannel(56,56)
+US.Squad.Nellis.tsqSHL:SetTakeoffHot()
 
 --AWACS
 US.Squad.Nellis.esqE3=SQUADRON:New("E3", 4, "E3 Nellis") --Ops.Squadron#SQUADRON
@@ -174,6 +178,7 @@ US.Squad.Nellis.esqE3:SetMissionRange(500)
 US.Squad.Nellis.esqE3:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Nellis.esqE3:SetRadio(255)
 US.Squad.Nellis.esqE3:SetCallsign(CALLSIGN.AWACS.Darkstar,1)
+US.Squad.Nellis.esqE3:SetTakeoffHot()
 
 --Apaches Nellis
 US.Squad.Nellis.AtkHelos=SQUADRON:New("Apaches", 20, "Apaches Nellis") --Ops.Squadron#SQUADRON
@@ -183,6 +188,7 @@ US.Squad.Nellis.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Nellis.AtkHelos:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Nellis.AtkHelos:SetCallsign(19,1)
 US.Squad.Nellis.AtkHelos:SetRadio(255)
+US.Squad.Nellis.AtkHelos:SetTakeoffHot()
 
 --Chinooks Nellis
 US.Squad.Nellis.Chinooks=SQUADRON:New("Chinooks", 20, "Chinooks Nellis") --Ops.Squadron#SQUADRON
@@ -191,6 +197,7 @@ US.Squad.Nellis.Chinooks:SetFuelLowThreshold(0.1)
 US.Squad.Nellis.Chinooks:SetTurnoverTime(10,20)
 US.Squad.Nellis.Chinooks:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Nellis.Chinooks:SetRadio(255)
+US.Squad.Nellis.Chinooks:SetTakeoffHot()
 --US.Squad.Nellis.Chinooks:SetCallsign(19,1)
 
 -- Add Squads to Nellis Airwing
@@ -368,6 +375,7 @@ US.Squad.Creech.fsq02:SetFuelLowRefuel(true)
 US.Squad.Creech.fsq02:SetFuelLowThreshold(35)
 US.Squad.Creech.fsq02:SetTurnoverTime(10,15)
 US.Squad.Creech.fsq02:SetCallsign(10,1)
+US.Squad.Creech.fsq02:SetTakeoffHot()
 --US.Squad.Creech.fsq02:SetEPLRS(true)
 
 --Blackhawks Creech
@@ -377,6 +385,8 @@ US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Creech.AtkHelos:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.AtkHelos:SetCallsign(14,1)
+US.Squad.Creech.AtkHelos:SetTakeoffHot()
+
 --US.Squad.Creech.AtkHelos:SetEPLRS(true)
 
 --Drones Creech
@@ -386,6 +396,7 @@ US.Squad.Creech.Drones:SetFuelLowThreshold(0.1)
 US.Squad.Creech.Drones:SetTurnoverTime(10,20)
 US.Squad.Creech.Drones:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.Drones:SetCallsign(14,1)
+US.Squad.Creech.Drones:SetTakeoffHot()
 --US.Squad.Creech.Drones:SetEPLRS(true)
 
 --Chinooks Creech
@@ -394,6 +405,7 @@ US.Squad.Creech.Chinooks:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFT
 US.Squad.Creech.Chinooks:SetFuelLowThreshold(0.1)
 US.Squad.Creech.Chinooks:SetTurnoverTime(10,20)
 US.Squad.Creech.Chinooks:SetSkill(AI.Skill.AVERAGE)
+US.Squad.Creech.Chinooks:SetCallsign(19,1)
 --US.Squad.Creech.Chinooks:SetCallsign(19,1)
 
 -- Add Squads to Creech Airwing
@@ -759,6 +771,7 @@ RED.Squad.Tonopah.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTR
 RED.Squad.Tonopah.AtkHelos:SetFuelLowThreshold(0.1)
 RED.Squad.Tonopah.AtkHelos:SetTurnoverTime(10,20)
 RED.Squad.Tonopah.AtkHelos:SetSkill(AI.Skill.AVERAGE)
+RED.Squad.Tonopah.AtkHelos:SetTakeoffHot()
 
 --Hips Tonopah
 RED.Squad.Tonopah.Hips=SQUADRON:New("Hips", 20, "Hips Tonopah") --Ops.Squadron#SQUADRON
@@ -766,6 +779,7 @@ RED.Squad.Tonopah.Hips:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRA
 RED.Squad.Tonopah.Hips:SetFuelLowThreshold(0.1)
 RED.Squad.Tonopah.Hips:SetTurnoverTime(10,20)
 RED.Squad.Tonopah.Hips:SetSkill(AI.Skill.AVERAGE)
+RED.Squad.Tonopah.Hips:SetTakeoffHot()
 
 --SU27s for various tasks
 RED.Squad.Tonopah.SU27s=SQUADRON:New("SU27s", 10, "SU27s Tonopah") --Ops.Squadron#SQUADRON
@@ -775,6 +789,7 @@ RED.Squad.Tonopah.SU27s:SetSkill(AI.Skill.AVERAGE)
 RED.Squad.Tonopah.SU27s:SetFuelLowRefuel(true)
 RED.Squad.Tonopah.SU27s:SetFuelLowThreshold(35)
 RED.Squad.Tonopah.SU27s:SetTurnoverTime(10,15)
+RED.Squad.Tonopah.SU27s:SetTakeoffHot()
 
 
 -- Add Squads to Tonopah Airwing
