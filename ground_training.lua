@@ -80,7 +80,8 @@ local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief
 
 BlueChief:SetBorderZones(BlueBorderZones)
 BlueChief:SetDefcon(CHIEF.DEFCON.GREEN)
-BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+--BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+BlueChief:SetStrategy(CHIEF.Strategy.OFFENSIVE)
 BlueChief:SetThreatLevelRange(1, 1000)
 
 if BlueDebug then
@@ -482,7 +483,7 @@ end
 --Add Platoons 
 US.Platoon.Creech={}
 US.Platoon.Creech.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", -1, "HIMARS-HE")
-US.Platoon.Creech.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY
+US.Platoon.Creech.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.himarsHe:SetSkill(AI.Skill.AVERAGE)
 
 US.Platoon.Creech.m270 = PLATOON:New("M270A1-GMLRS", -1, "M270")
@@ -557,11 +558,13 @@ end
 
 for _,zone in pairs(Zones.CreechGnd) do
 	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
-	Patrol:AssignCohort(US.Platoon.Nellis.abrams)
+	Patrol:AssignCohort(US.Platoon.Creech.abrams)
 	Patrol:SetRepeat(99)
 	BlueChief:AddMission(Patrol)
 end
-	  
+
+
+
 
 -- +-----------------------------+
 -- |  BlueChief Managed Missions  |
@@ -714,7 +717,8 @@ local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
 
 RedChief:SetBorderZones(RedBorderZones)
 RedChief:SetDefcon(CHIEF.DEFCON.GREEN)
-RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+--RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+RedChief:SetStrategy(CHIEF.Strategy.OFFENSIVE)
 RedChief:SetThreatLevelRange(1, 1000)
 
 if RedDebug then
@@ -756,6 +760,13 @@ RED.Squad.Tonopah.AtkHelos:SetFuelLowThreshold(0.1)
 RED.Squad.Tonopah.AtkHelos:SetTurnoverTime(10,20)
 RED.Squad.Tonopah.AtkHelos:SetSkill(AI.Skill.AVERAGE)
 
+--Hips Tonopah
+RED.Squad.Tonopah.Hips=SQUADRON:New("Hips", 20, "Hips Tonopah") --Ops.Squadron#SQUADRON
+RED.Squad.Tonopah.Hips:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
+RED.Squad.Tonopah.Hips:SetFuelLowThreshold(0.1)
+RED.Squad.Tonopah.Hips:SetTurnoverTime(10,20)
+RED.Squad.Tonopah.Hips:SetSkill(AI.Skill.AVERAGE)
+
 --SU27s for various tasks
 RED.Squad.Tonopah.SU27s=SQUADRON:New("SU27s", 10, "SU27s Tonopah") --Ops.Squadron#SQUADRON
 RED.Squad.Tonopah.SU27s:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
@@ -774,7 +785,7 @@ end
 -- Add Payloads
 RED.Wing.Tonopah:NewPayload("Hinds", -1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
 RED.Wing.Tonopah:NewPayload("SU27s", -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
-
+RED.Wing.Tonopah:NewPayload("Hips", -1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER},100)
 
 if RedDebug then
 	--- Display mission status on screen.
