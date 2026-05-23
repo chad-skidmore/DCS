@@ -55,6 +55,14 @@ if BlueDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
 if RedDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
 --local RedAttackZones = SET_ZONE:New():FilterPrefixes("RedAttackZone"):FilterOnce()
 
+local StrategicZones = {}
+StrategicZones.Blue = {}
+StrategicZones.Red = {}
+StrategicZones.Blue.Tonopah = ZONE:New("TonopahStrategicZone")
+
+
+
+
 
 
 -- +-----------------------------+
@@ -151,7 +159,7 @@ US.Squad.Nellis.tsqTEX:SetFuelLowThreshold(0.1)
 US.Squad.Nellis.tsqTEX:SetTurnoverTime(10,20)
 US.Squad.Nellis.tsqTEX:SetMissionRange(500)
 US.Squad.Nellis.tsqTEX:SetSkill(AI.Skill.AVERAGE)
-US.Squad.Nellis.tsqTEX:SetRadio(305)
+US.Squad.Nellis.tsqTEX:SetRadio(262)
 US.Squad.Nellis.tsqTEX:SetCallsign(CALLSIGN.Tanker.Texaco,1)
 US.Squad.Nellis.tsqTEX:AddTacanChannel(51,51)
 US.Squad.Nellis.tsqTEX:SetTakeoffHot()
@@ -379,7 +387,7 @@ US.Squad.Creech.fsq02:SetTakeoffHot()
 --US.Squad.Creech.fsq02:SetEPLRS(true)
 
 --Blackhawks Creech
-US.Squad.Creech.AtkHelos=SQUADRON:New("DAPs", 20, "DAPs Creech") --Ops.Squadron#SQUADRON
+US.Squad.Creech.AtkHelos=SQUADRON:New("Cobras", 20, "Cobras Creech") --Ops.Squadron#SQUADRON
 US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 100)
 US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
@@ -418,7 +426,7 @@ local F16sGroundLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sGround")
 local F16sSEADoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sSEAD"), -1, {AUFTRAG.Type.SEAD}, 100)
 --local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.Intercept, AUFTRAG.Type.ALERT5}, 100)
 local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
-US.Wing.Creech:NewPayload("DAPs",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
+US.Wing.Creech:NewPayload("Cobras",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
 US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE},100)
 US.Wing.Creech:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
 
@@ -494,25 +502,25 @@ end
 
 --Add Platoons 
 US.Platoon.Creech={}
-US.Platoon.Creech.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", -1, "HIMARS-HE")
+US.Platoon.Creech.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", -1, "Creech HIMARS-HE")
 US.Platoon.Creech.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.himarsHe:SetSkill(AI.Skill.AVERAGE)
 
-US.Platoon.Creech.m270 = PLATOON:New("M270A1-GMLRS", -1, "M270")
+US.Platoon.Creech.m270 = PLATOON:New("M270A1-GMLRS", -1, "Creech M270")
 US.Platoon.Creech.m270:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.m270:SetSkill(AI.Skill.AVERAGE)
 
-US.Platoon.Creech.paladin = PLATOON:New("Paladin", -1, "Paladin")
+US.Platoon.Creech.paladin = PLATOON:New("Paladin", -1, "Creech Paladin")
 US.Platoon.Creech.paladin:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.paladin:SetSkill(AI.Skill.AVERAGE)
 
-US.Platoon.Creech.howitzer = PLATOON:New("Howitzer", -1, "Howitzer")
+US.Platoon.Creech.howitzer = PLATOON:New("Howitzer", -1, "CreechHowitzer")
 US.Platoon.Creech.howitzer:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.howitzer:SetSkill(AI.Skill.AVERAGE)
 
 
-US.Platoon.Creech.abrams = PLATOON:New("Abrams", -1, "Abrams")
-US.Platoon.Creech.abrams:AddMissionCapability(AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK)
+US.Platoon.Creech.abrams = PLATOON:New("Abrams", -1, "CreechAbrams")
+US.Platoon.Creech.abrams:AddMissionCapability({AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK}, 100)
 US.Platoon.Creech.abrams:SetSkill(AI.Skill.AVERAGE)
 
 -- Add Platoons to Creech Brigade
@@ -599,6 +607,8 @@ local BlueCreechCAP = AUFTRAG:NewCAP(Zones.CreechAir.CreechCAP, 20000, 300, Zone
 	BlueCreechCAP:SetRepeat(99)
 	BlueCreechCAP:SetName("Blue Creech CAP")
 	BlueChief:AddMission(BlueCreechCAP)
+
+-- local tonopahStratZone=BlueChief:AddStrategicZone(StrategicZones.Blue.Tonopah, nil , 1)
 
 -- local TexacoAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.TexacoZone:GetCoordinate(),20000,UTILS.KnotsToAltKIAS(250,20000),270,25,1)
 -- 	TexacoAuftrag:AssignCohort(US.Squad.Nellis.tsqTEX)
