@@ -1,7 +1,14 @@
 BASE:I("----------------------------------------LOADING THE GROUND TRAINING MISSION -------------------------------------------------")
 trigger.action.outText('-----------------LOADING THE GROUND TRAINING MISSION------------------', 15)
 
-
+do
+  local event = EVENTHANDLER:New()
+  event:HandleEvent(EVENTS.LandingAfterEjection, function(EventData)
+    if EventData.IniDCSUnit then
+      EventData.IniDCSUnit:destroy()
+    end
+  end)
+end
 
 --dofile("./bin/jsDb_init.lua"
 --assert(loadfile("D:DCS MooseMISSIONSMoose_Include_StaticMoose_.lua"))()
@@ -10,7 +17,7 @@ trigger.action.outText('-----------------LOADING THE GROUND TRAINING MISSION----
 -- |    SETUP & DEBUG OPTIONS    |
 -- +-----------------------------+
 
-RedDebug = true
+RedDebug = false
 RedVerbosity = 6
 
 BlueDebug = true
@@ -55,11 +62,9 @@ if BlueDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
 if RedDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
 --local RedAttackZones = SET_ZONE:New():FilterPrefixes("RedAttackZone"):FilterOnce()
 
-local StrategicZones = {}
-StrategicZones.Blue = {}
-StrategicZones.Red = {}
-StrategicZones.Blue.Tonopah = ZONE:New("TonopahStrategicZone")
-
+local BlueStrategicZones = {}
+BlueStrategicZones.Tonopah = OPSZONE:New(ZONE:FindByName("TonopahStrategicZone"), coalition.side.BLUE)
+local BlueAttackZone = ZONE:New("BlueAttackZone")
 
 
 
@@ -89,7 +94,7 @@ local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief
 BlueChief:SetBorderZones(BlueBorderZones)
 BlueChief:SetDefcon(CHIEF.DEFCON.GREEN)
 --BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
-BlueChief:SetStrategy(CHIEF.Strategy.OFFENSIVE)
+BlueChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 BlueChief:SetThreatLevelRange(1, 1000)
 
 if BlueDebug then
@@ -130,7 +135,7 @@ US.Squad.Nellis={}
 
 --F15s for various tasks
 US.Squad.Nellis.fsq01=SQUADRON:New("F15Es", 10, "F15Es Nellis") --Ops.Squadron#SQUADRON
-US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.BAI, AUFTRAG.Type.BOMBING, AUFTRAG.Type.BOMBRUNWAY, AUFTRAG.Type.GCICAS, AUFTRAG.Type.STRIKE}, 100)
+US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.BAI, AUFTRAG.Type.BOMBING, AUFTRAG.Type.BOMBRUNWAY, AUFTRAG.Type.STRIKE, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 100)
 US.Squad.Nellis.fsq01:SetMissionRange(500)
 US.Squad.Nellis.fsq01:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Nellis.fsq01:SetFuelLowRefuel(true)
@@ -200,7 +205,7 @@ US.Squad.Nellis.AtkHelos:SetTakeoffHot()
 
 --Chinooks Nellis
 US.Squad.Nellis.Chinooks=SQUADRON:New("Chinooks", 20, "Chinooks Nellis") --Ops.Squadron#SQUADRON
-US.Squad.Nellis.Chinooks:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
+US.Squad.Nellis.Chinooks:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
 US.Squad.Nellis.Chinooks:SetFuelLowThreshold(0.1)
 US.Squad.Nellis.Chinooks:SetTurnoverTime(10,20)
 US.Squad.Nellis.Chinooks:SetSkill(AI.Skill.AVERAGE)
@@ -216,10 +221,11 @@ end
 
 	  
 --Add Payloads
-local F15sLoadout=US.Wing.Nellis:NewPayload(GROUP:FindByName("F15Cs"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
-US.Wing.Nellis:NewPayload("E3",-1,{AUFTRAG.Type.AWACS},100)
-US.Wing.Nellis:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
-US.Wing.Nellis:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
+local F15sLoadout = US.Wing.Nellis:NewPayload(GROUP:FindByName("F15Cs"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
+US.Wing.Nellis:NewPayload("F15Es", -1, {AUFTRAG.Type.BAI, AUFTRAG.Type.STRIKE, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 100)
+US.Wing.Nellis:NewPayload("E3",-1, {AUFTRAG.Type.AWACS},100)
+US.Wing.Nellis:NewPayload("Apaches",-1, {AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
+US.Wing.Nellis:NewPayload("Chinooks",-1, {AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
 
 
 --ASSIGN ESCORTS
@@ -376,7 +382,7 @@ US.Squad.Creech={}
 
 --F16s for various tasks
 US.Squad.Creech.fsq02=SQUADRON:New("F16s", 10, "F16s Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.fsq02:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
+US.Squad.Creech.fsq02:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.STRIKE, AUFTRAG.Type.SEAD}, 100)
 US.Squad.Creech.fsq02:SetMissionRange(500)
 US.Squad.Creech.fsq02:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.fsq02:SetFuelLowRefuel(true)
@@ -387,7 +393,7 @@ US.Squad.Creech.fsq02:SetTakeoffHot()
 --US.Squad.Creech.fsq02:SetEPLRS(true)
 
 --Blackhawks Creech
-US.Squad.Creech.AtkHelos=SQUADRON:New("Cobras", 20, "Cobras Creech") --Ops.Squadron#SQUADRON
+US.Squad.Creech.AtkHelos=SQUADRON:New("Apaches", 20, "Apaches Creech") --Ops.Squadron#SQUADRON
 US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 100)
 US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
@@ -409,7 +415,7 @@ US.Squad.Creech.Drones:SetTakeoffHot()
 
 --Chinooks Creech
 US.Squad.Creech.Chinooks=SQUADRON:New("Chinooks", 20, "Chinooks Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.Chinooks:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
+US.Squad.Creech.Chinooks:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
 US.Squad.Creech.Chinooks:SetFuelLowThreshold(0.1)
 US.Squad.Creech.Chinooks:SetTurnoverTime(10,20)
 US.Squad.Creech.Chinooks:SetSkill(AI.Skill.AVERAGE)
@@ -422,13 +428,12 @@ for _,squad in pairs(US.Squad.Creech) do
 end
 
 
-local F16sGroundLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sGround"), -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.STRIKE}, 100)
-local F16sSEADoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sSEAD"), -1, {AUFTRAG.Type.SEAD}, 100)
---local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.Intercept, AUFTRAG.Type.ALERT5}, 100)
+local F16sGroundLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sGround"), -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.STRIKE}, 100)
+local F16sSEADLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sSEAD"), -1, {AUFTRAG.Type.SEAD}, 100)
 local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
-US.Wing.Creech:NewPayload("Cobras",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
+US.Wing.Creech:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
 US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE},100)
-US.Wing.Creech:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER}, 100)
+US.Wing.Creech:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
 
 
 --ASSIGN ESCORTS
@@ -520,8 +525,12 @@ US.Platoon.Creech.howitzer:SetSkill(AI.Skill.AVERAGE)
 
 
 US.Platoon.Creech.abrams = PLATOON:New("Abrams", -1, "CreechAbrams")
-US.Platoon.Creech.abrams:AddMissionCapability({AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK}, 100)
+US.Platoon.Creech.abrams:AddMissionCapability({AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK, AUFTRAG.TypeARMORATTACK, AUFTRAG.Type.ARMOREDGUARD, AUFTRAG.Type.CAPTUREZONE, AUFTRAG.Type.ONGUARD, AUFTRAG.Type.PATROLZONE}, 100)
 US.Platoon.Creech.abrams:SetSkill(AI.Skill.AVERAGE)
+
+US.Platoon.Creech.infantry = PLATOON:New("Infantry", -1, "CreechInfantry")
+US.Platoon.Creech.infantry:AddMissionCapability({AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK, AUFTRAG.Type.CAPTUREZONE, AUFTRAG.Type.ONGUARD, AUFTRAG.Type.PATROLZONE}, 100)
+US.Platoon.Creech.infantry:SetSkill(AI.Skill.AVERAGE)
 
 -- Add Platoons to Creech Brigade
 for _,platoon in pairs(US.Platoon.Creech) do
@@ -608,7 +617,7 @@ local BlueCreechCAP = AUFTRAG:NewCAP(Zones.CreechAir.CreechCAP, 20000, 300, Zone
 	BlueCreechCAP:SetName("Blue Creech CAP")
 	BlueChief:AddMission(BlueCreechCAP)
 
--- local tonopahStratZone=BlueChief:AddStrategicZone(StrategicZones.Blue.Tonopah, nil , 1)
+
 
 -- local TexacoAuftrag = AUFTRAG:NewTANKER(BlueLogisticsZones.TexacoZone:GetCoordinate(),20000,UTILS.KnotsToAltKIAS(250,20000),270,25,1)
 -- 	TexacoAuftrag:AssignCohort(US.Squad.Nellis.tsqTEX)
@@ -661,8 +670,8 @@ end
 
 BlueChief:__Start(10)
 
-
-
+local tonopahStratZone = BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1)
+BlueChief:AddAttackZone(BlueAttackZone)
 -- +-----------------------------+
 -- |       CHIEF LOGISTICS       |
 -- +-----------------------------+
@@ -965,3 +974,12 @@ trigger.action.outText('-----------------EVERYTHING LOADED (ITS A MIRACLE!)-----
 
 
 
+-- -- Drop-in STTS replacement
+-- HoundTTS.TextToSpeech("Hello DCS World", "251.0", "AM", 1.0, "ATC", 2)
+
+-- -- Piper TTS over SRS
+-- HoundTTS.Transmit(
+--     "Bogey, bullseye 270 for 15",
+--     { freqs = "251.0", modulations = "AM", coalition = 2, name = "GCI" },
+--     { provider = "piper", voice = "en_US-lessac-low" }
+-- )
