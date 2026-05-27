@@ -104,8 +104,31 @@ if BlueDebug then
 end
 
 
+BlueChief:SetResponseOnTarget(1, 2, 8, TARGET.Category.AIRCRAFT)
+BlueChief:SetResponseOnTarget(1, 2, 0, nil, AUFTRAG.Type.BAI, nil, CHIEF.DEFCON.YELLOW)
+
+local BlueStrategicOccupied, resourceCAS=BlueChief:CreateResource(AUFTRAG.Type.CASENHANCED, 1, 2)
+BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.ARTY, 1, 2, nil, "MLRS")
+BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.RECON, 1, nil, GROUP.Attribute.AIR_UAV)
+
+local BlueStrategicEmpty, resourceInf=BlueChief:CreateResource(AUFTRAG.Type.ONGUARD, 1, 5, GROUP.Attribute.GROUND_INFANTRY)
+BlueChief:AddToResource(ResourceEmpty, AUFTRAG.Type.ONGUARD, 1, 3, GROUP.Attribute.GROUND_TANK)
+BlueChief:AddToResource(ResourceEmpty, AUFTRAG.Type.PATROLZONE, 2)
+BlueChief:AddTransportToResource(resourceInf, 1, 2, GROUP.Attribute.AIR_TRANSPORTHELO)
+
+--local tonopahStratZone = BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1)
+BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1, ResourceOccupied, ResourceEmpty)
+BlueChief:AddAttackZone(BlueAttackZone)
+
+BlueChief:AllowGroundTransport()
+
+
 BASE:I("----------------------------------------BLUE CHIEF SET-------------------------------------------------")
 trigger.action.outText('BLUE CHIEF LOADED', 10)
+
+
+
+
 
 -- Blue (US/NATO) side.
 local US={}
@@ -670,8 +693,7 @@ end
 
 BlueChief:__Start(10)
 
-local tonopahStratZone = BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1)
-BlueChief:AddAttackZone(BlueAttackZone)
+
 -- +-----------------------------+
 -- |       CHIEF LOGISTICS       |
 -- +-----------------------------+
