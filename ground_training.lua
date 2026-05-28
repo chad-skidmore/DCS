@@ -92,7 +92,7 @@ local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE)
 local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief")
 
 BlueChief:SetBorderZones(BlueBorderZones)
-BlueChief:SetDefcon(CHIEF.DEFCON.GREEN)
+BlueChief:SetDefcon(CHIEF.DEFCON.RED)
 --BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
 BlueChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 BlueChief:SetThreatLevelRange(1, 1000)
@@ -104,23 +104,6 @@ if BlueDebug then
 end
 
 
-BlueChief:SetResponseOnTarget(1, 2, 8, TARGET.Category.AIRCRAFT)
-BlueChief:SetResponseOnTarget(1, 2, 0, nil, AUFTRAG.Type.BAI, nil, CHIEF.DEFCON.YELLOW)
-
-local BlueStrategicOccupied, resourceCAS=BlueChief:CreateResource(AUFTRAG.Type.CASENHANCED, 1, 2)
-BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.ARTY, 1, 2, nil, "MLRS")
-BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.RECON, 1, nil, GROUP.Attribute.AIR_UAV)
-
-local BlueStrategicEmpty, resourceInf=BlueChief:CreateResource(AUFTRAG.Type.ONGUARD, 1, 5, GROUP.Attribute.GROUND_INFANTRY)
-BlueChief:AddToResource(ResourceEmpty, AUFTRAG.Type.ONGUARD, 1, 3, GROUP.Attribute.GROUND_TANK)
-BlueChief:AddToResource(ResourceEmpty, AUFTRAG.Type.PATROLZONE, 2)
-BlueChief:AddTransportToResource(resourceInf, 1, 2, GROUP.Attribute.AIR_TRANSPORTHELO)
-
---local tonopahStratZone = BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1)
-BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1, ResourceOccupied, ResourceEmpty)
-BlueChief:AddAttackZone(BlueAttackZone)
-
-BlueChief:AllowGroundTransport()
 
 
 BASE:I("----------------------------------------BLUE CHIEF SET-------------------------------------------------")
@@ -405,7 +388,7 @@ US.Squad.Creech={}
 
 --F16s for various tasks
 US.Squad.Creech.fsq02=SQUADRON:New("F16s", 10, "F16s Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.fsq02:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.STRIKE, AUFTRAG.Type.SEAD}, 100)
+US.Squad.Creech.fsq02:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.STRIKE, AUFTRAG.Type.SEAD}, 95)
 US.Squad.Creech.fsq02:SetMissionRange(500)
 US.Squad.Creech.fsq02:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.fsq02:SetFuelLowRefuel(true)
@@ -451,9 +434,9 @@ for _,squad in pairs(US.Squad.Creech) do
 end
 
 
-local F16sGroundLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sGround"), -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.STRIKE}, 100)
+local F16sGroundLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sGround"), -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.STRIKE}, 95)
 local F16sSEADLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sSEAD"), -1, {AUFTRAG.Type.SEAD}, 100)
-local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
+local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 95)
 US.Wing.Creech:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
 US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE},100)
 US.Wing.Creech:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
@@ -691,6 +674,26 @@ for _,Brigade in pairs(US.Brigade) do
 	end
 end
 
+
+BlueChief:SetResponseOnTarget(1, 2, 0, TARGET.Category.AIRCRAFT)
+BlueChief:SetResponseOnTarget(1, 2, 0, nil, AUFTRAG.Type.BAI, nil)
+BlueChief:SetResponseOnTarget(1, 3, 0, TARGET.Category.GROUND, nil ,nil, nil)
+
+local BlueStrategicOccupied, resourceCAS=BlueChief:CreateResource(AUFTRAG.Type.CASENHANCED, 1, 2)
+BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.ARTY, 1, 2, nil, "MLRS")
+BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.RECON, 1, nil, GROUP.Attribute.AIR_UAV)
+
+local BlueStrategicEmpty, resourceInf=BlueChief:CreateResource(AUFTRAG.Type.ONGUARD, 1, 5, GROUP.Attribute.GROUND_INFANTRY)
+BlueChief:AddToResource(BlueStrategicEmpty, AUFTRAG.Type.ONGUARD, 1, 3, GROUP.Attribute.GROUND_TANK)
+BlueChief:AddToResource(BlueStrategicEmpty, AUFTRAG.Type.PATROLZONE, 2)
+BlueChief:AddTransportToResource(resourceInf, 1, 2, GROUP.Attribute.AIR_TRANSPORTHELO)
+
+--local tonopahStratZone = BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1)
+BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1, BlueStrategicOccupied, BlueStrategicEmpty)
+BlueChief:AddAttackZone(BlueAttackZone)
+
+BlueChief:AllowGroundTransport()
+
 BlueChief:__Start(10)
 
 
@@ -769,9 +772,9 @@ local RedIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.RED):F
 local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
 
 RedChief:SetBorderZones(RedBorderZones)
-RedChief:SetDefcon(CHIEF.DEFCON.GREEN)
+RedChief:SetDefcon(CHIEF.DEFCON.RED)
 --RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
-RedChief:SetStrategy(CHIEF.Strategy.OFFENSIVE)
+RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 RedChief:SetThreatLevelRange(1, 1000)
 
 if RedDebug then
