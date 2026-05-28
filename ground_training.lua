@@ -79,6 +79,7 @@ BlueLogisticsZones.TexacoZone= ZONE:New("TexacoZone")
 BlueLogisticsZones.ShellZone= ZONE:New("ShellZone")
 BlueLogisticsZones.AwacsZone= ZONE:New("AwacsZone")
 BlueLogisticsZones.DroneZone= ZONE:New("DroneZone")
+BlueLogisticsZones.CreechSpawnZone = Zone:New("CreechSpawnZone")
 
 if BlueDebug then
 	for _,zone in pairs(BlueLogisticsZones) do
@@ -505,6 +506,7 @@ BASE:I("----------------------------------------CREECH AIRWING LOADED-----------
 
 BASE:I("----------------------------------------CREECH BRIGADE LOADING-------------------------------------------------")
 US.Brigade.Creech = BRIGADE:New("Creech Warehouse", "Creech Brigade") --Ops.AirWing#AIRWING
+US.Brigade.Creech:SetSpawnZone(BlueLogisticsZones.CreechSpawnZone)
 
 if BlueDebug then
 	US.Brigade.Creech:SetVerbosity(BlueVerbosity)
