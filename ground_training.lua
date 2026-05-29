@@ -94,8 +94,7 @@ local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE)
 local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief")
 
 BlueChief:SetBorderZones(BlueBorderZones)
-BlueChief:SetDefcon(CHIEF.DEFCON.RED)
---BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+BlueChief:SetDefcon(CHIEF.DEFCON.GREEN)
 BlueChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 BlueChief:SetThreatLevelRange(1, 1000)
 BlueChief:SetConflictZones(ConflictZones)
@@ -402,6 +401,7 @@ US.Squad.Creech.fsq02:SetFuelLowThreshold(35)
 US.Squad.Creech.fsq02:SetTurnoverTime(10,15)
 US.Squad.Creech.fsq02:SetCallsign(10,1)
 US.Squad.Creech.fsq02:SetTakeoffHot()
+US.Squad.Creech.fsq02:SetGrouping(4)
 --US.Squad.Creech.fsq02:SetEPLRS(true)
 
 --A10s for various tasks
@@ -417,7 +417,7 @@ US.Squad.Creech.a10s:SetTakeoffHot()
 
 --Apaches Creech
 US.Squad.Creech.AtkHelos=SQUADRON:New("Apaches", 20, "Apaches Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 91)
+US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 50)
 US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Creech.AtkHelos:SetSkill(AI.Skill.EXCELLENT)
@@ -444,6 +444,17 @@ US.Squad.Creech.Chinooks:SetFuelLowThreshold(0.1)
 US.Squad.Creech.Chinooks:SetTurnoverTime(10,20)
 US.Squad.Creech.Chinooks:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Creech.Chinooks:SetCallsign(19,1)
+US.Squad.Creech.Chinooks:SetGrouping(2)
+--US.Squad.Creech.Chinooks:SetCallsign(19,1)
+
+--C130s Creech
+US.Squad.Creech.C130s=SQUADRON:New("C130s", 20, "C130s Creech") --Ops.Squadron#SQUADRON
+US.Squad.Creech.C130s:AddMissionCapability({AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.OPSTRANSPORT}, 100)
+US.Squad.Creech.C130s:SetFuelLowThreshold(0.1)
+US.Squad.Creech.C130s:SetTurnoverTime(10,20)
+US.Squad.Creech.C130s:SetSkill(AI.Skill.AVERAGE)
+--US.Squad.Creech.C130s:SetCallsign(19,1)
+US.Squad.Creech.C130s:SetGrouping(1)
 --US.Squad.Creech.Chinooks:SetCallsign(19,1)
 
 -- Add Squads to Creech Airwing
@@ -459,6 +470,7 @@ US.Wing.Creech:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.C
 US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS},80)
 US.Wing.Creech:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
 US.Wing.Creech:NewPayload("A10s",-1,{AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.STRIKE, AUFTRAG.Type.BOMBING, AUFTRAG.Type.STRAFING},100)
+US.Wing.Creech:NewPayload("C130s",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.OPSTRANSPORT}, 100)
 
 
 --ASSIGN ESCORTS
@@ -613,7 +625,7 @@ end
 
 for _,zone in pairs(Zones.CreechAir) do
 	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
-	Patrol:AssignCohort(US.Squad.Creech.AtkHelos)
+	Patrol:AssignCohort(US.Squad.Creech.a10s)
 	Patrol:SetRepeat(99)
 	BlueChief:AddMission(Patrol)
 end
@@ -709,14 +721,17 @@ BlueChief:SetResponseOnTarget(2, 4, 0, nil, AUFTRAG.Type.CASENHANCED, nil)
 BlueChief:SetResponseOnTarget(1, 3, 0, TARGET.Category.GROUND, nil ,nil, nil)
 
 local BlueStrategicOccupied, resourceCAS=BlueChief:CreateResource(AUFTRAG.Type.CASENHANCED, 1, 2)
-BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.ARTY, 1, 2, nil)
+--BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.ARTY, 1, 2, nil)
 BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.RECON, 1, nil, GROUP.Attribute.AIR_UAV)
 BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.BOMBING, 2, 4)
 
 local BlueStrategicEmpty, resourceInf=BlueChief:CreateResource(AUFTRAG.Type.ONGUARD, 1, 5, GROUP.Attribute.GROUND_INFANTRY)
+resourceArty = BlueChief:CreateResource(AUFTRAG.Type.ARTY, 1, 2, nil)
+BlueChief:AddToResource(BlueStrategicEmpty, resourceArty)
 BlueChief:AddToResource(BlueStrategicEmpty, AUFTRAG.Type.ONGUARD, 1, 3, GROUP.Attribute.GROUND_TANK)
 BlueChief:AddToResource(BlueStrategicEmpty, AUFTRAG.Type.PATROLZONE, 2)
-BlueChief:AddTransportToResource(resourceInf, 1, 2, GROUP.Attribute.AIR_TRANSPORTHELO)
+BlueChief:AddTransportToResource(resourceInf, 1, 2, {GROUP.Attribute.AIR_TRANSPORTHELO, GROUP.Attribute.AIR_AIR_TRANSPORTPLANE})
+BlueChief:AddTransportToResource(resourceArty, 1, 2, GROUP.Attribute.AIR_AIR_TRANSPORTPLANE)
 
 --local tonopahStratZone = BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1)
 BlueChief:AddStrategicZone(BlueStrategicZones.Tonopah, nil , 1, BlueStrategicOccupied, BlueStrategicEmpty)
