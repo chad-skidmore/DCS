@@ -53,9 +53,9 @@ _SETTINGS:SetMenutextShort(true) -- shorter menus for VR
 -- +-----------------------------+
 
 --BORDERS
-local BlueBorderZones = ZONE_POLYGON:New("Blue Border",GROUP:FindByName("BlueBorder"))        --Core.Zone#ZONE
+local BlueBorderZones = SET_ZONE:New():FilterPrefixes("BlueBorder"):FilterOnce()
 if BlueDebug then BlueBorderZones:DrawZone(-1, {0,0,1} , 1, {0,0,1}) end
-local RedBorderZones = ZONE_POLYGON:New("Red Border",GROUP:FindByName("RedBorder"))
+local RedBorderZones = SET_ZONE:New():FilterPrefixes("RedBorder"):FilterOnce()
 if RedDebug then RedBorderZones:DrawZone(-1, {1,0,0} , 1, {1,0,0}) end           --Core.Zone#ZONE
 local ConflictZones = SET_ZONE:New():FilterPrefixes("ConflictZone"):FilterOnce()              --#SET_ZONE
 if BlueDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
@@ -79,7 +79,8 @@ BlueLogisticsZones.TexacoZone= ZONE:New("TexacoZone")
 BlueLogisticsZones.ShellZone= ZONE:New("ShellZone")
 BlueLogisticsZones.AwacsZone= ZONE:New("AwacsZone")
 BlueLogisticsZones.DroneZone= ZONE:New("DroneZone")
-BlueLogisticsZones.CreechSpawnZone = Zone:New("CreechSpawnZone")
+BlueLogisticsZones.CreechSpawnZone = ZONE:New("CreechSpawnZone")
+BlueLogisticsZones.NellisSpawnZone = ZONE:New("NellisSpawnZone")
 
 if BlueDebug then
 	for _,zone in pairs(BlueLogisticsZones) do
@@ -97,6 +98,7 @@ BlueChief:SetDefcon(CHIEF.DEFCON.RED)
 --BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
 BlueChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 BlueChief:SetThreatLevelRange(1, 1000)
+BlueChief:SetConflictZones(ConflictZones)
 
 if BlueDebug then
 	BlueChief:SetVerbosity(BlueVerbosity)
@@ -143,6 +145,7 @@ US.Squad.Nellis={}
 --F15s for various tasks
 US.Squad.Nellis.fsq01=SQUADRON:New("F15Es", 10, "F15Es Nellis") --Ops.Squadron#SQUADRON
 US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.BAI, AUFTRAG.Type.BOMBING, AUFTRAG.Type.BOMBRUNWAY, AUFTRAG.Type.STRIKE, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 100)
+US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 98)
 US.Squad.Nellis.fsq01:SetMissionRange(500)
 US.Squad.Nellis.fsq01:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Nellis.fsq01:SetFuelLowRefuel(true)
@@ -229,7 +232,8 @@ end
 	  
 --Add Payloads
 local F15sLoadout = US.Wing.Nellis:NewPayload(GROUP:FindByName("F15Cs"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
-US.Wing.Nellis:NewPayload("F15Es", -1, {AUFTRAG.Type.BAI, AUFTRAG.Type.STRIKE, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 100)
+US.Wing.Nellis:NewPayload("F15Es", -1, {AUFTRAG.Type.BAI, AUFTRAG.Type.STRIKE, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BOMBING}, 100)
+US.Wing.Nellis:NewPayload("F15Es", -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 98)
 US.Wing.Nellis:NewPayload("E3",-1, {AUFTRAG.Type.AWACS},100)
 US.Wing.Nellis:NewPayload("Apaches",-1, {AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
 US.Wing.Nellis:NewPayload("Chinooks",-1, {AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
@@ -301,6 +305,7 @@ BASE:I("----------------------------------------NELLIS AIRWING LOADED-----------
 
 BASE:I("----------------------------------------NELLIS BRIGADE LOADING-------------------------------------------------")
 US.Brigade.Nellis = BRIGADE:New("Nellis Warehouse", "Nellis Brigade") --Ops.AirWing#AIRWING
+US.Brigade.Nellis:SetSpawnZone(BlueLogisticsZones.NellisSpawnZone)
 
 if BlueDebug then
 	US.Brigade.Nellis:SetVerbosity(BlueVerbosity)
@@ -309,27 +314,27 @@ end
 
 --Add Platoons 
 US.Platoon.Nellis={}
-US.Platoon.Nellis.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", -1, "HIMARS-HE")
+US.Platoon.Nellis.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", 20, "HIMARS-HE")
 US.Platoon.Nellis.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Nellis.himarsHe:SetSkill(AI.Skill.AVERAGE)
 US.Platoon.Nellis.himarsHe:SetRadio(251)
 
-US.Platoon.Nellis.m270 = PLATOON:New("M270A1-GMLRS", -1, "M270")
+US.Platoon.Nellis.m270 = PLATOON:New("M270A1-GMLRS", 20, "M270")
 US.Platoon.Nellis.m270:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Nellis.m270:SetSkill(AI.Skill.AVERAGE)
 US.Platoon.Nellis.m270:SetRadio(251)
 
-US.Platoon.Nellis.paladin = PLATOON:New("Paladin", -1, "Paladin")
+US.Platoon.Nellis.paladin = PLATOON:New("Paladin", 20, "Paladin")
 US.Platoon.Nellis.paladin:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Nellis.paladin:SetSkill(AI.Skill.AVERAGE)
 US.Platoon.Nellis.paladin:SetRadio(251)
 
-US.Platoon.Nellis.howitzer = PLATOON:New("Howitzer", -1, "Howitzer")
+US.Platoon.Nellis.howitzer = PLATOON:New("Howitzer", 20, "Howitzer")
 US.Platoon.Nellis.howitzer:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Nellis.howitzer:SetSkill(AI.Skill.AVERAGE)
 US.Platoon.Nellis.howitzer:SetRadio(251)
 
-US.Platoon.Nellis.abrams = PLATOON:New("Abrams", -1, "Abrams")
+US.Platoon.Nellis.abrams = PLATOON:New("Abrams", 20, "Abrams")
 US.Platoon.Nellis.abrams:AddMissionCapability({AUFTRAG.Type.GROUNDATTACK, AUFTRAG.Type.PATROLZONE}, 100)
 US.Platoon.Nellis.abrams:SetSkill(AI.Skill.AVERAGE)
 US.Platoon.Nellis.abrams:SetRadio(251)
@@ -399,9 +404,20 @@ US.Squad.Creech.fsq02:SetCallsign(10,1)
 US.Squad.Creech.fsq02:SetTakeoffHot()
 --US.Squad.Creech.fsq02:SetEPLRS(true)
 
---Blackhawks Creech
+--A10s for various tasks
+US.Squad.Creech.a10s=SQUADRON:New("A10s", 20, "A10s Creech") --Ops.Squadron#SQUADRON
+US.Squad.Creech.a10s:AddMissionCapability({AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.STRIKE, AUFTRAG.Type.BOMBING, AUFTRAG.Type.STRAFING}, 100)
+US.Squad.Creech.a10s:SetMissionRange(500)
+US.Squad.Creech.a10s:SetSkill(AI.Skill.EXCELLENT)
+US.Squad.Creech.a10s:SetFuelLowRefuel(true)
+US.Squad.Creech.a10s:SetFuelLowThreshold(35)
+US.Squad.Creech.a10s:SetTurnoverTime(10,15)
+--US.Squad.Creech.a10s:SetCallsign(10,1)
+US.Squad.Creech.a10s:SetTakeoffHot()
+
+--Apaches Creech
 US.Squad.Creech.AtkHelos=SQUADRON:New("Apaches", 20, "Apaches Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 100)
+US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 91)
 US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Creech.AtkHelos:SetSkill(AI.Skill.EXCELLENT)
@@ -412,7 +428,8 @@ US.Squad.Creech.AtkHelos:SetTakeoffHot()
 
 --Drones Creech
 US.Squad.Creech.Drones=SQUADRON:New("Drones", 20, "Drones Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.Drones:AddMissionCapability({AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE}, 100)
+US.Squad.Creech.Drones:AddMissionCapability({AUFTRAG.Type.RECON, AUFTRAG.Type.FACA}, 100)
+US.Squad.Creech.Drones:AddMissionCapability({AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS}, 80)
 US.Squad.Creech.Drones:SetFuelLowThreshold(0.1)
 US.Squad.Creech.Drones:SetTurnoverTime(10,20)
 US.Squad.Creech.Drones:SetSkill(AI.Skill.EXCELLENT)
@@ -438,9 +455,10 @@ end
 local F16sGroundLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sGround"), -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.STRIKE}, 95)
 local F16sSEADLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16sSEAD"), -1, {AUFTRAG.Type.SEAD}, 100)
 local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 95)
-US.Wing.Creech:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},100)
-US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE},100)
+US.Wing.Creech:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},98)
+US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS},80)
 US.Wing.Creech:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
+US.Wing.Creech:NewPayload("A10s",-1,{AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.STRIKE, AUFTRAG.Type.BOMBING, AUFTRAG.Type.STRAFING},100)
 
 
 --ASSIGN ESCORTS
@@ -515,35 +533,42 @@ end
 
 --Add Platoons 
 US.Platoon.Creech={}
-US.Platoon.Creech.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", -1, "Creech HIMARS-HE")
+US.Platoon.Creech.himarsHe = PLATOON:New("HIMARS-GMLRS-HE", 20, "Creech HIMARS-HE")
 US.Platoon.Creech.himarsHe:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.himarsHe:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Creech.himarsHe:SetAttribute(GROUP.Attribute.GROUND_ARTILLERY)
 
-US.Platoon.Creech.m270 = PLATOON:New("M270A1-GMLRS", -1, "Creech M270")
+US.Platoon.Creech.m270 = PLATOON:New("M270A1-GMLRS", 20, "Creech M270")
 US.Platoon.Creech.m270:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.m270:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Creech.m270:SetAttribute(GROUP.Attribute.GROUND_ARTILLERY)
 
-US.Platoon.Creech.paladin = PLATOON:New("Paladin", -1, "Creech Paladin")
+US.Platoon.Creech.paladin = PLATOON:New("Paladin", 20, "Creech Paladin")
 US.Platoon.Creech.paladin:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.paladin:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Creech.paladin:SetAttribute(GROUP.Attribute.GROUND_ARTILLERY)
 
-US.Platoon.Creech.howitzer = PLATOON:New("Howitzer", -1, "CreechHowitzer")
+US.Platoon.Creech.howitzer = PLATOON:New("Howitzer", 20, "CreechHowitzer")
 US.Platoon.Creech.howitzer:AddMissionCapability(AUFTRAG.Type.ARTY)
 US.Platoon.Creech.howitzer:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Creech.howitzer:SetAttribute(GROUP.Attribute.GROUND_ARTILLERY)
 
-
-US.Platoon.Creech.abrams = PLATOON:New("Abrams", -1, "CreechAbrams")
+US.Platoon.Creech.abrams = PLATOON:New("Abrams", 20, "CreechAbrams")
 US.Platoon.Creech.abrams:AddMissionCapability({AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK, AUFTRAG.TypeARMORATTACK, AUFTRAG.Type.ARMOREDGUARD, AUFTRAG.Type.CAPTUREZONE, AUFTRAG.Type.ONGUARD, AUFTRAG.Type.PATROLZONE}, 100)
 US.Platoon.Creech.abrams:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Creech.abrams:SetAttribute(GROUP.Attribute.GROUND_TANK)
 
-US.Platoon.Creech.infantry = PLATOON:New("Infantry", -1, "CreechInfantry")
+US.Platoon.Creech.infantry = PLATOON:New("Infantry", 100, "CreechInfantry")
 US.Platoon.Creech.infantry:AddMissionCapability({AUFTRAG.Type.ARTY, AUFTRAG.Type.GROUNDATTACK, AUFTRAG.Type.CAPTUREZONE, AUFTRAG.Type.ONGUARD, AUFTRAG.Type.PATROLZONE}, 100)
 US.Platoon.Creech.infantry:SetSkill(AI.Skill.AVERAGE)
+US.Platoon.Creech.infantry:SetAttribute(GROUP.Attribute.GROUND_INFANTRY)
 
 -- Add Platoons to Creech Brigade
 for _,platoon in pairs(US.Platoon.Creech) do
 	US.Brigade.Creech:AddPlatoon(platoon)
 end
+
+
 
 BASE:I("----------------------------------------Creech BRIGADE LOADED-------------------------------------------------")
 
@@ -616,14 +641,14 @@ local BlueAWACS = AUFTRAG:NewAWACS(BlueLogisticsZones.AwacsZone:GetCoordinate(),
       BlueChief:AddMission(BlueAWACS)
 
 local BlueDrone = AUFTRAG:NewRECON(BlueLogisticsZones.DroneZone:GetCoordinate(), 300, 21000, true, false)
-	BlueDrone:SetRepeat(99)
-	BlueDrone:SetName("Blue Drone")
-	BlueChief:AddMission(BlueDrone)
+	    BlueDrone:SetRepeat(99)
+	    BlueDrone:SetName("Blue Drone")
+	    BlueChief:AddMission(BlueDrone)
 
 local BlueCreechCAP = AUFTRAG:NewCAP(Zones.CreechAir.CreechCAP, 20000, 300, Zones.CreechAir.CreechCAP:GetCoordinate(), 180, 20)
-	BlueCreechCAP:SetRepeat(99)
-	BlueCreechCAP:SetName("Blue Creech CAP")
-	BlueChief:AddMission(BlueCreechCAP)
+	    BlueCreechCAP:SetRepeat(99)
+	    BlueCreechCAP:SetName("Blue Creech CAP")
+	    BlueChief:AddMission(BlueCreechCAP)
 
 
 
@@ -679,11 +704,14 @@ end
 
 BlueChief:SetResponseOnTarget(1, 2, 0, TARGET.Category.AIRCRAFT)
 BlueChief:SetResponseOnTarget(1, 2, 0, nil, AUFTRAG.Type.BAI, nil)
+BlueChief:SetResponseOnTarget(2, 4, 0, nil, AUFTRAG.Type.CAS, nil)
+BlueChief:SetResponseOnTarget(2, 4, 0, nil, AUFTRAG.Type.CASENHANCED, nil)
 BlueChief:SetResponseOnTarget(1, 3, 0, TARGET.Category.GROUND, nil ,nil, nil)
 
 local BlueStrategicOccupied, resourceCAS=BlueChief:CreateResource(AUFTRAG.Type.CASENHANCED, 1, 2)
-BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.ARTY, 1, 2, nil, "MLRS")
+BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.ARTY, 1, 2, nil)
 BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.RECON, 1, nil, GROUP.Attribute.AIR_UAV)
+BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.BOMBING, 2, 4)
 
 local BlueStrategicEmpty, resourceInf=BlueChief:CreateResource(AUFTRAG.Type.ONGUARD, 1, 5, GROUP.Attribute.GROUND_INFANTRY)
 BlueChief:AddToResource(BlueStrategicEmpty, AUFTRAG.Type.ONGUARD, 1, 3, GROUP.Attribute.GROUND_TANK)
@@ -778,6 +806,7 @@ RedChief:SetDefcon(CHIEF.DEFCON.RED)
 --RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
 RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 RedChief:SetThreatLevelRange(1, 1000)
+RedChief:SetConflictZones(ConflictZones)
 
 if RedDebug then
 	RedChief:SetVerbosity(RedVerbosity)
