@@ -143,8 +143,8 @@ US.Squad.Nellis={}
 
 --F15s for various tasks
 US.Squad.Nellis.fsq01=SQUADRON:New("F15Es", 10, "F15Es Nellis") --Ops.Squadron#SQUADRON
-US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.BAI, AUFTRAG.Type.BOMBING, AUFTRAG.Type.BOMBRUNWAY, AUFTRAG.Type.STRIKE, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 100)
-US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 98)
+US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.BAI, AUFTRAG.Type.STRIKE}, 100)
+US.Squad.Nellis.fsq01:AddMissionCapability({AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 75)
 US.Squad.Nellis.fsq01:SetMissionRange(500)
 US.Squad.Nellis.fsq01:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Nellis.fsq01:SetFuelLowRefuel(true)
@@ -231,8 +231,7 @@ end
 	  
 --Add Payloads
 local F15sLoadout = US.Wing.Nellis:NewPayload(GROUP:FindByName("F15Cs"), -1, {AUFTRAG.Type.CAP, AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ESCORT, AUFTRAG.Type.GCICAP, AUFTRAG.Type.ALERT5}, 100)
-US.Wing.Nellis:NewPayload("F15Es", -1, {AUFTRAG.Type.BAI, AUFTRAG.Type.STRIKE, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BOMBING}, 100)
-US.Wing.Nellis:NewPayload("F15Es", -1, {AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 98)
+US.Wing.Nellis:NewPayload("F15Es", -1, {AUFTRAG.Type.BAI, AUFTRAG.Type.STRIKE, AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED}, 100)
 US.Wing.Nellis:NewPayload("E3",-1, {AUFTRAG.Type.AWACS},100)
 US.Wing.Nellis:NewPayload("Apaches",-1, {AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ALERT5},100)
 US.Wing.Nellis:NewPayload("Chinooks",-1, {AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
@@ -402,11 +401,12 @@ US.Squad.Creech.fsq02:SetTurnoverTime(10,15)
 US.Squad.Creech.fsq02:SetCallsign(10,1)
 US.Squad.Creech.fsq02:SetTakeoffHot()
 US.Squad.Creech.fsq02:SetGrouping(4)
+US.Squad.Creech.fsq02:SetRadio(251)
 --US.Squad.Creech.fsq02:SetEPLRS(true)
 
 --A10s for various tasks
 US.Squad.Creech.a10s=SQUADRON:New("A10s", 20, "A10s Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.a10s:AddMissionCapability({AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.STRIKE, AUFTRAG.Type.BOMBING, AUFTRAG.Type.STRAFING}, 100)
+US.Squad.Creech.a10s:AddMissionCapability({AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.STRIKE, AUFTRAG.Type.FACA}, 100)
 US.Squad.Creech.a10s:SetMissionRange(500)
 US.Squad.Creech.a10s:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.a10s:SetFuelLowRefuel(true)
@@ -414,28 +414,31 @@ US.Squad.Creech.a10s:SetFuelLowThreshold(35)
 US.Squad.Creech.a10s:SetTurnoverTime(10,15)
 --US.Squad.Creech.a10s:SetCallsign(10,1)
 US.Squad.Creech.a10s:SetTakeoffHot()
+US.Squad.Creech.a10s:SetRadio(251)
 
 --Apaches Creech
 US.Squad.Creech.AtkHelos=SQUADRON:New("Apaches", 20, "Apaches Creech") --Ops.Squadron#SQUADRON
-US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 50)
+US.Squad.Creech.AtkHelos:AddMissionCapability({AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE}, 70)
 US.Squad.Creech.AtkHelos:SetFuelLowThreshold(0.1)
 US.Squad.Creech.AtkHelos:SetTurnoverTime(10,20)
 US.Squad.Creech.AtkHelos:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.AtkHelos:SetCallsign(14,1)
 US.Squad.Creech.AtkHelos:SetTakeoffHot()
+US.Squad.Creech.AtkHelos:SetRadio(251)
 
 --US.Squad.Creech.AtkHelos:SetEPLRS(true)
 
 --Drones Creech
 US.Squad.Creech.Drones=SQUADRON:New("Drones", 20, "Drones Creech") --Ops.Squadron#SQUADRON
 US.Squad.Creech.Drones:AddMissionCapability({AUFTRAG.Type.RECON, AUFTRAG.Type.FACA}, 100)
-US.Squad.Creech.Drones:AddMissionCapability({AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS}, 80)
+US.Squad.Creech.Drones:AddMissionCapability({AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS}, 60)
 US.Squad.Creech.Drones:SetFuelLowThreshold(0.1)
 US.Squad.Creech.Drones:SetTurnoverTime(10,20)
 US.Squad.Creech.Drones:SetSkill(AI.Skill.EXCELLENT)
 US.Squad.Creech.Drones:SetCallsign(14,1)
 US.Squad.Creech.Drones:SetTakeoffHot()
 --US.Squad.Creech.Drones:SetEPLRS(true)
+US.Squad.Creech.Drones:SetRadio(251)
 
 --Chinooks Creech
 US.Squad.Creech.Chinooks=SQUADRON:New("Chinooks", 20, "Chinooks Creech") --Ops.Squadron#SQUADRON
@@ -446,6 +449,7 @@ US.Squad.Creech.Chinooks:SetSkill(AI.Skill.AVERAGE)
 US.Squad.Creech.Chinooks:SetCallsign(19,1)
 US.Squad.Creech.Chinooks:SetGrouping(2)
 --US.Squad.Creech.Chinooks:SetCallsign(19,1)
+US.Squad.Creech.Chinooks:SetRadio(251)
 
 --C130s Creech
 US.Squad.Creech.C130s=SQUADRON:New("C130s", 20, "C130s Creech") --Ops.Squadron#SQUADRON
@@ -456,6 +460,7 @@ US.Squad.Creech.C130s:SetSkill(AI.Skill.AVERAGE)
 --US.Squad.Creech.C130s:SetCallsign(19,1)
 US.Squad.Creech.C130s:SetGrouping(1)
 --US.Squad.Creech.Chinooks:SetCallsign(19,1)
+US.Squad.Creech.C130s:SetRadio(251)
 
 -- Add Squads to Creech Airwing
 for _,squad in pairs(US.Squad.Creech) do
@@ -469,7 +474,9 @@ local F16sAirLoadout=US.Wing.Creech:NewPayload(GROUP:FindByName("F16s"), -1, {AU
 US.Wing.Creech:NewPayload("Apaches",-1,{AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE},98)
 US.Wing.Creech:NewPayload("Drones",-1,{AUFTRAG.Type.RECON, AUFTRAG.Type.FACA, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.CAS},80)
 US.Wing.Creech:NewPayload("Chinooks",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.HOVER, AUFTRAG.Type.OPSTRANSPORT}, 100)
-US.Wing.Creech:NewPayload("A10s",-1,{AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED, AUFTRAG.Type.BAI, AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.STRIKE, AUFTRAG.Type.BOMBING, AUFTRAG.Type.STRAFING},100)
+US.Wing.Creech:NewPayload("A10s",-1,{AUFTRAG.Type.FACA},100)
+US.Wing.Creech:NewPayload("A10s-CAS",-1,{AUFTRAG.Type.CAS, AUFTRAG.Type.CASENHANCED},100)
+US.Wing.Creech:NewPayload("A10s-GroundAtk",-1,{AUFTRAG.Type.BAI, AUFTRAG.Type.STRIKE},100)
 US.Wing.Creech:NewPayload("C130s",-1,{AUFTRAG.Type.TROOPTRANSPORT, AUFTRAG.Type.CARGOTRANSPORT, AUFTRAG.Type.OPSTRANSPORT}, 100)
 
 
@@ -625,7 +632,7 @@ end
 
 for _,zone in pairs(Zones.CreechAir) do
 	local Patrol = AUFTRAG:NewPATROLZONE(zone)                              --Ops.AUFTRAG
-	Patrol:AssignCohort(US.Squad.Creech.a10s)
+	Patrol:AssignCohort(US.Squad.Creech.AtkHelos)
 	Patrol:SetRepeat(99)
 	BlueChief:AddMission(Patrol)
 end
@@ -723,7 +730,8 @@ BlueChief:SetResponseOnTarget(1, 3, 0, TARGET.Category.GROUND, nil ,nil, nil)
 local BlueStrategicOccupied, resourceCAS=BlueChief:CreateResource(AUFTRAG.Type.CASENHANCED, 1, 2)
 --BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.ARTY, 1, 2, nil)
 BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.RECON, 1, nil, GROUP.Attribute.AIR_UAV)
-BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.BOMBING, 2, 4)
+BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.BAI, 2, 4)
+BlueChief:AddToResource(BlueStrategicOccupied, AUFTRAG.Type.GCICAP, 2, 4)
 
 local BlueStrategicEmpty, resourceInf=BlueChief:CreateResource(AUFTRAG.Type.ONGUARD, 1, 5, GROUP.Attribute.GROUND_INFANTRY)
 resourceArty = BlueChief:CreateResource(AUFTRAG.Type.ARTY, 1, 2, nil)
