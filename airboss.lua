@@ -88,7 +88,7 @@ end
 function StartRescueHelo()
     if Rescuehelo:IsStopped() then
         Rescuehelo:Start()
-        TIMER:New(RescueheloState):Start(5, 30)
+        TIMER:New(RescueheloState):Start(60, 30)
     end
 end
 
