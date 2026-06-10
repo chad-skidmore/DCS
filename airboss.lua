@@ -106,25 +106,25 @@ local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, St
 
 
 -- Red side.
-local RED={}
-RED.Wing={}--Ops.AirWing#AIRWING
-RED.Squad={}--Ops.Squadron#SQUADRON
-RED.Fleet={}--Ops.Fleet#FLEET
-RED.Flotilla={}--Ops.Flotilla#FLOTILLA
-RED.Brigade={}--Ops.Brigade#BRIGADE
-RED.Platoon={}
+-- local RED={}
+-- RED.Wing={}--Ops.AirWing#AIRWING
+-- RED.Squad={}--Ops.Squadron#SQUADRON
+-- RED.Fleet={}--Ops.Fleet#FLEET
+-- RED.Flotilla={}--Ops.Flotilla#FLOTILLA
+-- RED.Brigade={}--Ops.Brigade#BRIGADE
+-- RED.Platoon={}
 
-local RedLogisticsZones = {}
+-- local RedLogisticsZones = {}
 
-local RedIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.RED):FilterStart()
-local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
+-- local RedIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.RED):FilterStart()
+-- local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
 
-RedChief:SetBorderZones(RedBorderZones)
-RedChief:SetDefcon(CHIEF.DEFCON.RED)
-RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
---RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
-RedChief:SetThreatLevelRange(1, 1000)
-RedChief:SetConflictZones(ConflictZones)
+-- RedChief:SetBorderZones(RedBorderZones)
+-- RedChief:SetDefcon(CHIEF.DEFCON.RED)
+-- RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+-- --RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
+-- RedChief:SetThreatLevelRange(1, 1000)
+-- RedChief:SetConflictZones(ConflictZones)
 
 
 
