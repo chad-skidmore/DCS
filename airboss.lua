@@ -66,14 +66,16 @@ function airbossGW:OnAfterRecoveryStop(From, Event, To)
 end
 
 function Rescuehelo:onafterRTB(From, Event, To, airbase)
-    MESSAGE:New{"Rescue Helo is RTB", 120}:ToAll()
+    MESSAGE:New("Rescue Helo is RTB", 120):ToAll()
+end
+
+function Rescuehelo:onafterStatus(From, Event, To)
+    local text=string.format("Rescue Helo Status: From %s, Event %s, To %s", From, Event, To)
+    MESSAGE:New(text, 120):ToAll()
 end
 
 
-function RescueheloStatus()
-    local text = string.format("Rescue helo state: %s", Rescuehelo:Status())
-    MESSAGE:New{text, 120}:ToAll()
-end
+
 
 function BeginRecovery()
     StartRescueHelo()
@@ -88,7 +90,7 @@ end
 function StartRescueHelo()
     if Rescuehelo:IsStopped() then
         Rescuehelo:Start()
-        TIMER:New(RescueheloStatus):Start(60, 30)
+        --TIMER:New(RescueheloStatus):Start(60, 30)
     end
 end
 
