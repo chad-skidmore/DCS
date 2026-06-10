@@ -70,8 +70,8 @@ function Rescuehelo:onafterRTB(From, Event, To, airbase)
 end
 
 
-function RescueheloState()
-    local text = string.format("Rescue helo state: %s", Rescuehelo:GetState())
+function RescueheloStatus()
+    local text = string.format("Rescue helo state: %s", Rescuehelo:Status())
     MESSAGE:New{text, 120}:ToAll()
 end
 
@@ -88,7 +88,7 @@ end
 function StartRescueHelo()
     if Rescuehelo:IsStopped() then
         Rescuehelo:Start()
-        TIMER:New(RescueheloState):Start(60, 30)
+        TIMER:New(RescueheloStatus):Start(60, 30)
     end
 end
 
