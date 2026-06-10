@@ -49,8 +49,8 @@ local function BeginRecovery()
 end
 
 local function StopRecovery()
-    airbossGW:DeleteRecoveryWindow(window1, 60)
-    Rescuehelo:RTB()
+    airbossGW:DeleteRecoveryWindow(window1, 30)
+    Rescuehelo:__RTB(90)
 end
 
 function StartRescueHelo()
