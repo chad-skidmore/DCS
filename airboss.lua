@@ -135,13 +135,15 @@ local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, St
 
 
 
-
-
-
-
-
-
 StartRescueHelo()
+TIMER:New(RescueheloState):Start(5, 30)
+
+
+
+
+
+
+
 
 BASE:I("----------------------------------------AIRBOSS TRAINING MISSION LOAD COMPLETE-------------------------------------------------")
 trigger.action.outText('-----------------AIRBOSS TRAINING MISSION LOAD COMPLETE------------------', 15)
