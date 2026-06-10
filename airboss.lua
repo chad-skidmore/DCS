@@ -2,6 +2,24 @@ BASE:I("----------------------------------------LOADING THE AIRBOSS TRAINING MIS
 trigger.action.outText('-----------------LOADING THE AIRBOSS TRAINING MISSION------------------', 15)
 
 
+
+--Seed the Random Function a few times
+math.random(100)
+math.random(100)
+math.random(100)
+math.random(100)
+math.random(100)
+math.random(100)
+
+
+
+local BlueBorderZones = SET_ZONE:New():FilterPrefixes("BlueBorder"):FilterOnce()
+local RedBorderZones = SET_ZONE:New():FilterPrefixes("RedBorder"):FilterOnce()
+local ConflictZones = SET_ZONE:New():FilterPrefixes("ConflictZone"):FilterOnce()
+
+
+
+
 local abConfig = {}
 abConfig.carriername = "USS George Washington"
 abConfig.carrieralias = "GW"
@@ -35,6 +53,10 @@ airbossGW:Start()
 local Rescuehelo=RESCUEHELO:New(UNIT:FindByName(abConfig.carriername), "Rescue Helo")
 Rescuehelo:SetTakeoffHot()
 
+
+
+
+
 function airbossGW:OnAfterRecoveryStart(From, Event, To, Case, Offset)
   MESSAGE:New("USS George Washington recovery starting", 120):ToAll()
 end
@@ -43,12 +65,22 @@ function airbossGW:OnAfterRecoveryStop(From, Event, To)
   MESSAGE:New("USS George Washington recovery stopping", 120):ToAll()
 end
 
-local function BeginRecovery()
+function Rescuehelo:onafterRTB(From, Event, To, airbase)
+    MESSAGE:New{"Rescue Helo is RTB", 120}:ToAll()
+end
+
+
+function RescueheloState()
+    local text = text..string.format("Rescue helo state: %s", Rescuehelo:GetState())
+    MESSAGE:New{text, 120}:ToAll()
+end
+
+function BeginRecovery()
     StartRescueHelo()
     local window1=airbossGW:AddRecoveryWindow(nil, nil, abConfig.case, nil, true, 25)
 end
 
-local function StopRecovery()
+function StopRecovery()
     airbossGW:DeleteRecoveryWindow(window1, 30)
     Rescuehelo:__RTB(90)
 end
@@ -62,6 +94,51 @@ end
 local RecoveryMenu=MENU_MISSION:New("Recovery Menu")--#MENU
 local RecoveryMenu1 = MENU_MISSION_COMMAND:New("Begin Recovery", RecoveryMenu, BeginRecovery)--#MENU
 local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, StopRecovery)--#MENU
+
+
+
+
+
+
+
+
+
+
+
+-- Red side.
+local RED={}
+RED.Wing={}--Ops.AirWing#AIRWING
+RED.Squad={}--Ops.Squadron#SQUADRON
+RED.Fleet={}--Ops.Fleet#FLEET
+RED.Flotilla={}--Ops.Flotilla#FLOTILLA
+RED.Brigade={}--Ops.Brigade#BRIGADE
+RED.Platoon={}
+
+local RedLogisticsZones = {}
+
+local RedIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.RED):FilterStart()
+local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
+
+RedChief:SetBorderZones(RedBorderZones)
+RedChief:SetDefcon(CHIEF.DEFCON.RED)
+RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+--RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
+RedChief:SetThreatLevelRange(1, 1000)
+RedChief:SetConflictZones(ConflictZones)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 StartRescueHelo()
