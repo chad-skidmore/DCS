@@ -32,6 +32,9 @@ local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
   airbossGW:SetVoiceOversLSOByRaynor("AirbossSoundfiles/")
 airbossGW:Start()
 
+local Rescuehelo=RESCUEHELO:New(UNIT:FindByName(abConfig.carriername), "Rescue Helo")
+Rescuehelo:SetTakeoffHot()
+
 function airbossGW:OnAfterRecoveryStart(From, Event, To, Case, Offset)
   MESSAGE:New("USS George Washington recovery starting", 120):ToAll()
 end
@@ -51,9 +54,9 @@ local function StopRecovery()
 end
 
 function StartRescueHelo()
-    local Rescuehelo=RESCUEHELO:New(UNIT:FindByName(abConfig.carriername), "Rescue Helo")
-    Rescuehelo:SetTakeoffHot()
-    Rescuehelo:Start()
+    if Rescuehelo:IsStopped() then
+        Rescuehelo:Start()
+    end
 end
 
 local RecoveryMenu=MENU_MISSION:New("Recovery Menu")--#MENU
