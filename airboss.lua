@@ -43,9 +43,9 @@ function airbossGW:OnAfterRecoveryStop(From, Event, To)
 end
 
 local function BeginRecovery()
-    local startTime = timer.getTime() + 60
-    local endTime = startTime + 3600
-    local window1=AirbossStennis:AddRecoveryWindow(nil, nil, abConfig.case, nil, true, 25)
+    -- local startTime = timer.getTime() + 60
+    -- local endTime = startTime + 3600
+    local window1=airbossGW:AddRecoveryWindow(nil, nil, abConfig.case, nil, true, 25)
 end
 
 local function StopRecovery()
