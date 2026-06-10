@@ -50,7 +50,7 @@ end
 
 local function StopRecovery()
     airbossGW:DeleteRecoveryWindow(window1, 60)
-    Rescuehelo:Stop()
+    Rescuehelo:RTB()
 end
 
 function StartRescueHelo()
