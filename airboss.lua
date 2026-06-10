@@ -71,7 +71,7 @@ end
 
 
 function RescueheloState()
-    local text = text..string.format("Rescue helo state: %s", Rescuehelo:GetState())
+    local text = string.format("Rescue helo state: %s", Rescuehelo:GetState())
     MESSAGE:New{text, 120}:ToAll()
 end
 
