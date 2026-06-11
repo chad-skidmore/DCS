@@ -2,6 +2,9 @@ BASE:I("----------------------------------------LOADING THE AIRBOSS TRAINING MIS
 trigger.action.outText('-----------------LOADING THE AIRBOSS TRAINING MISSION------------------', 15)
 
 
+BASE:TraceOnOff(true)
+BASE:TraceLevel(1)
+BASE:TraceClass("AIRBOSS")
 
 --Seed the Random Function a few times
 math.random(100)
@@ -49,6 +52,9 @@ local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
   airbossGW:SetVoiceOversMarshalByGabriella("AirbossSoundfiles/")
   airbossGW:SetVoiceOversLSOByRaynor("AirbossSoundfiles/")
 airbossGW:Start()
+airboss:SetDebugModeON()
+
+
 
 local Rescuehelo=RESCUEHELO:New(UNIT:FindByName(abConfig.carriername), "Rescue Helo")
 Rescuehelo:SetTakeoffHot()
@@ -79,7 +85,7 @@ end
 
 function BeginRecovery()
     StartRescueHelo()
-    local window1=airbossGW:AddRecoveryWindow(nil, nil, abConfig.case, nil, true, 25)
+    local window1=airbossGW:AddRecoveryWindow()
 end
 
 function StopRecovery()
