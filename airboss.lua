@@ -59,6 +59,31 @@ abConfig.skill = "Flight Student"
 abConfig.radioRelayLso = "gwlsorelay"
 abConfig.radioRelayMarshal = "gwmarshalrelay"
 
+-- No MOOSE settings menu. Comment out this line if required.
+_SETTINGS:SetPlayerMenuOff()
+
+-- S-3B Recovery Tanker spawning in air.
+local tanker=RECOVERYTANKER:New("USS George Washington", "Tanker")
+tanker:SetTakeoffAir()
+tanker:SetRadio(250)
+tanker:SetModex(511)
+tanker:SetTACAN(1, "TKR")
+tanker:__Start(1)
+
+-- E-2D AWACS spawning on Stennis.
+local awacs=RECOVERYTANKER:New("USS George Washington", "Blue AWACS")
+awacs:SetAWACS()
+awacs:SetRadio(251)
+awacs:SetAltitude(20000)
+awacs:SetCallsign(CALLSIGN.AWACS.Wizard)
+awacs:SetRacetrackDistances(30, 15)
+awacs:SetModex(611)
+awacs:SetTACAN(2, "WIZ")
+awacs:__Start(1)
+
+
+
+
 
 
 local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
@@ -69,8 +94,8 @@ local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
   airbossGW:SetRecoveryCase(abConfig.case)
   airbossGW:SetCarrierControlledArea(abConfig.cca)
   airbossGW:SetDefaultPlayerSkill(abConfig.skill)
-  airbossGW:SetRadioRelayLSO(abConfig.radioRelayLso)
-  airbossGW:SetRadioRelayMarshal(abConfig.radioRelayMarshal)
+  --airbossGW:SetRadioRelayLSO(abConfig.radioRelayLso)
+  --airbossGW:SetRadioRelayMarshal(abConfig.radioRelayMarshal)
   airbossGW:SetSoundfilesFolder("AirbossSoundfiles/")
   airbossGW:SetVoiceOversMarshalByGabriella("AirbossSoundfiles/MarshalGabriella/")
   airbossGW:SetVoiceOversLSOByRaynor("AirbossSoundfiles/LSORaynor/")
@@ -109,21 +134,29 @@ end
 function Rescuehelo:onafterStatus(From, Event, To)
     local text=string.format("Rescue Helo Status: From %s, Event %s, To %s", From, Event, To)
     MESSAGE:New(text, 120):ToAll()
+    airbossGW:SetRadioRelayMarshal(self:GetUnitName())
+end
+
+function tanker:OnAfterStart(From,Event,To)
+  airbossGW:SetRecoveryTanker(tanker)  
+  airbossGW:SetRadioRelayLSO(self:GetUnitName())
+end
+
+--- Function called when AWACS is started.
+function awacs:OnAfterStart(From,Event,To)
+  airbossGW:SetAWACS(awacs)
 end
 
 
+function BeginRecovery()
+    StartRescueHelo()
+    airbossGW:RecoveryStart(1)
+end
 
-
--- function BeginRecovery()
---     StartRescueHelo()
---     local window1=airbossGW:AddRecoveryWindow()
--- end
-
--- function StopRecovery()
---     airbossGW:CloseCurrentRecoveryWindow()
---     Rescuehelo:RTB()
---     --Rescuehelo:__RTB(90)
--- end
+function StopRecovery()
+    airbossGW:CloseCurrentRecoveryWindow()
+    Rescuehelo:RTB()
+end
 
 function StartRescueHelo()
     if Rescuehelo:IsStopped() then
@@ -131,9 +164,9 @@ function StartRescueHelo()
     end
 end
 
--- local RecoveryMenu=MENU_MISSION:New("Recovery Menu")--#MENU
--- local RecoveryMenu1 = MENU_MISSION_COMMAND:New("Begin Recovery", RecoveryMenu, BeginRecovery)--#MENU
--- local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, StopRecovery)--#MENU
+local RecoveryMenu=MENU_MISSION:New("Recovery Menu")--#MENU
+local RecoveryMenu1 = MENU_MISSION_COMMAND:New("Begin Recovery", RecoveryMenu, BeginRecovery)--#MENU
+local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, StopRecovery)--#MENU
 
 
 
