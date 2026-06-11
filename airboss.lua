@@ -94,8 +94,6 @@ local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
   airbossGW:SetRecoveryCase(abConfig.case)
   airbossGW:SetCarrierControlledArea(abConfig.cca)
   airbossGW:SetDefaultPlayerSkill(abConfig.skill)
-  --airbossGW:SetRadioRelayLSO(abConfig.radioRelayLso)
-  --airbossGW:SetRadioRelayMarshal(abConfig.radioRelayMarshal)
   airbossGW:SetSoundfilesFolder("AirbossSoundfiles/")
   airbossGW:SetVoiceOversMarshalByGabriella("AirbossSoundfiles/MarshalGabriella/")
   airbossGW:SetVoiceOversLSOByRaynor("AirbossSoundfiles/LSORaynor/")
@@ -105,6 +103,7 @@ local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
   airbossGW:Load()
   airbossGW:SetAutoSave()
   airbossGW:SetTrapSheet()
+  airbossGW:AddRecoveryWindow("7:00", "9:30", 1)
 airbossGW:Start()
 
 
@@ -150,7 +149,7 @@ end
 
 function BeginRecovery()
     StartRescueHelo()
-    airbossGW:RecoveryStart(1)
+    airbossGW:RecoveryStart(1 )
 end
 
 function StopRecovery()
