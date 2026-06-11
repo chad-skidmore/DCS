@@ -2,9 +2,27 @@ BASE:I("----------------------------------------LOADING THE AIRBOSS TRAINING MIS
 trigger.action.outText('-----------------LOADING THE AIRBOSS TRAINING MISSION------------------', 15)
 
 
-BASE:TraceOnOff(true)
-BASE:TraceLevel(1)
-BASE:TraceClass("AIRBOSS")
+
+-- SETUP DEBUGGING AND TRACING
+RedDebug = true
+RedVerbosity = 6
+
+BlueDebug = true
+BlueVerbosity = 6
+
+if RedDebug or BlueDebug then
+    trigger.action.outText('DEBUG IS ACTIVE', 10)
+    BASE:TraceLevel(3)
+    BASE:TraceClass("AUFTRAG")
+    BASE:TraceClass("AIRWING")
+    BASE:TraceClass("BRIGADE")
+    BASE:TraceClass("CHIEF")
+    BASE:TraceOnOff(true)
+    BASE:TraceLevel(3)
+    BASE:TraceClass("AIRBOSS")
+end
+
+
 
 --Seed the Random Function a few times
 math.random(100)
@@ -15,14 +33,19 @@ math.random(100)
 math.random(100)
 
 
-
+-- SETUP ALL OF THE PRIMARY ZONES
 local BlueBorderZones = SET_ZONE:New():FilterPrefixes("BlueBorder"):FilterOnce()
 local RedBorderZones = SET_ZONE:New():FilterPrefixes("RedBorder"):FilterOnce()
 local ConflictZones = SET_ZONE:New():FilterPrefixes("ConflictZone"):FilterOnce()
 
+if BlueDebug then BlueBorderZones:DrawZone(-1, {0,0,1} , 1, {0,0,1}) end
+if RedDebug then RedBorderZones:DrawZone(-1, {1,0,0} , 1, {1,0,0}) end
+if BlueDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
+if RedDebug then ConflictZones:DrawZone(-1, {0,1,0} , 1, {0,1,0}) end
 
 
 
+-- SETUP THE GW AIRBOSS
 local abConfig = {}
 abConfig.carriername = "USS George Washington"
 abConfig.carrieralias = "GW"
@@ -115,26 +138,26 @@ local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, St
 
 
 
--- Red side.
--- local RED={}
--- RED.Wing={}--Ops.AirWing#AIRWING
--- RED.Squad={}--Ops.Squadron#SQUADRON
--- RED.Fleet={}--Ops.Fleet#FLEET
--- RED.Flotilla={}--Ops.Flotilla#FLOTILLA
--- RED.Brigade={}--Ops.Brigade#BRIGADE
--- RED.Platoon={}
+Red side.
+local RED={}
+RED.Wing={}--Ops.AirWing#AIRWING
+RED.Squad={}--Ops.Squadron#SQUADRON
+RED.Fleet={}--Ops.Fleet#FLEET
+RED.Flotilla={}--Ops.Flotilla#FLOTILLA
+RED.Brigade={}--Ops.Brigade#BRIGADE
+RED.Platoon={}
 
--- local RedLogisticsZones = {}
+local RedLogisticsZones = {}
 
--- local RedIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.RED):FilterStart()
--- local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
+local RedIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.RED):FilterStart()
+local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
 
--- RedChief:SetBorderZones(RedBorderZones)
--- RedChief:SetDefcon(CHIEF.DEFCON.RED)
--- RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
--- --RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
--- RedChief:SetThreatLevelRange(1, 1000)
--- RedChief:SetConflictZones(ConflictZones)
+RedChief:SetBorderZones(RedBorderZones)
+RedChief:SetDefcon(CHIEF.DEFCON.GREEN)
+RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+--RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
+RedChief:SetThreatLevelRange(1, 1000)
+RedChief:SetConflictZones(ConflictZones)
 
 
 
