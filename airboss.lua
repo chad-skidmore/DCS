@@ -75,7 +75,7 @@ local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
   airbossGW:SetVoiceOversMarshalByGabriella("AirbossSoundfiles/")
   airbossGW:SetVoiceOversLSOByRaynor("AirbossSoundfiles/")
 airbossGW:Start()
-airboss:SetDebugModeON()
+airbossGW:SetDebugModeON()
 
 
 
