@@ -134,7 +134,25 @@ local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, St
 
 
 
+local BLUE={}
+BLUE.Wing={}--Ops.AirWing#AIRWING
+BLUE.Squad={}--Ops.Squadron#SQUADRON
+BLUE.Fleet={}--Ops.Fleet#FLEET
+BLUE.Flotilla={}--Ops.Flotilla#FLOTILLA
+BLUE.Brigade={}--Ops.Brigade#BRIGADE
+BLUE.Platoon={}
 
+local BlueLogisticsZones = {}
+
+local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE):FilterStart()
+local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief")
+
+BlueChief:SetBorderZones(BlueBorderZones)
+BlueChief:SetDefcon(CHIEF.DEFCON.GREEN)
+BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
+--RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
+BlueChief:SetThreatLevelRange(1, 1000)
+BlueChief:SetConflictZones(ConflictZones)
 
 
 
@@ -163,9 +181,19 @@ RedChief:SetConflictZones(ConflictZones)
 
 
 
+if BlueDebug then
+    BlueChief:SetVerbosity(BlueVerbosity)
+    BlueChief:SetClusterAnalysis(true,true)   -- Enable Intel clusters and markers
+    BlueChief:SetTacticalOverviewOn()
+end
+if RedDebug then
+    RedChief:SetVerbosity(RedVerbosity)
+    RedChief:SetClusterAnalysis(true,true)   -- Enable Intel clusters and markers
+    RedChief:SetTacticalOverviewOn()
+end
 
-
-
+BlueChief:__Start(10)
+RedChief:__Start(10)
 
 
 StartRescueHelo()
