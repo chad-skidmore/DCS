@@ -138,7 +138,7 @@ local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, St
 
 
 
-Red side.
+
 local RED={}
 RED.Wing={}--Ops.AirWing#AIRWING
 RED.Squad={}--Ops.Squadron#SQUADRON
