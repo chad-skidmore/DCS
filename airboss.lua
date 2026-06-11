@@ -74,8 +74,14 @@ local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
   airbossGW:SetSoundfilesFolder("AirbossSoundfiles/")
   airbossGW:SetVoiceOversMarshalByGabriella("AirbossSoundfiles/")
   airbossGW:SetVoiceOversLSOByRaynor("AirbossSoundfiles/")
+  airbossGW:SetMenuSingleCarrier()
+  airbossGW:SetMenuRecovery(30, 20, false)
+  airbossGW:SetDebugModeON()
+  airbossGW:Load()
+  airbossGW:SetAutoSave()
+  airbossGW:SetTrapSheet()
 airbossGW:Start()
-airbossGW:SetDebugModeON()
+
 
 
 
@@ -88,10 +94,12 @@ Rescuehelo:SetTakeoffHot()
 
 function airbossGW:OnAfterRecoveryStart(From, Event, To, Case, Offset)
   MESSAGE:New("USS George Washington recovery starting", 120):ToAll()
+  StartRescueHelo()
 end
 
 function airbossGW:OnAfterRecoveryStop(From, Event, To)
   MESSAGE:New("USS George Washington recovery stopping", 120):ToAll()
+  Rescuehelo:RTB()
 end
 
 function Rescuehelo:onafterRTB(From, Event, To, airbase)
@@ -106,27 +114,26 @@ end
 
 
 
-function BeginRecovery()
-    StartRescueHelo()
-    local window1=airbossGW:AddRecoveryWindow()
-end
+-- function BeginRecovery()
+--     StartRescueHelo()
+--     local window1=airbossGW:AddRecoveryWindow()
+-- end
 
-function StopRecovery()
-    airbossGW:CloseCurrentRecoveryWindow()
-    Rescuehelo:RTB()
-    --Rescuehelo:__RTB(90)
-end
+-- function StopRecovery()
+--     airbossGW:CloseCurrentRecoveryWindow()
+--     Rescuehelo:RTB()
+--     --Rescuehelo:__RTB(90)
+-- end
 
 function StartRescueHelo()
     if Rescuehelo:IsStopped() then
         Rescuehelo:Start()
-        --TIMER:New(RescueheloStatus):Start(60, 30)
     end
 end
 
-local RecoveryMenu=MENU_MISSION:New("Recovery Menu")--#MENU
-local RecoveryMenu1 = MENU_MISSION_COMMAND:New("Begin Recovery", RecoveryMenu, BeginRecovery)--#MENU
-local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, StopRecovery)--#MENU
+-- local RecoveryMenu=MENU_MISSION:New("Recovery Menu")--#MENU
+-- local RecoveryMenu1 = MENU_MISSION_COMMAND:New("Begin Recovery", RecoveryMenu, BeginRecovery)--#MENU
+-- local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, StopRecovery)--#MENU
 
 
 
