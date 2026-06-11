@@ -196,6 +196,22 @@ BlueChief:__Start(10)
 RedChief:__Start(10)
 
 
+
+myredmantis = MANTIS:New("myredmantis","Red SAM","Red EWR",nil,"red",false)
+myredmantis:AddZones(RedBorderZones,BlueBorderZones,ConflictZones)
+myredmantis:Start()
+
+
+
+
+
+
+
+
+
+
+
+
 StartRescueHelo()
 -- TIMER:New(RescueheloState):Start(5, 30)
 
