@@ -207,7 +207,6 @@ BLUE.Fleet.fifthfleet:Start()
 BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 1, "DDG1")
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
--- Weapon range of cannons has to be manually added.
 BLUE.Flotilla.DDG1:AddWeaponRange(1, 10, ENUMS.WeaponFlag.Cannons)
 
 BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
@@ -223,8 +222,6 @@ end
 
 
 local missionFleetPatrol = AUFTRAG:NewPATROLZONE(navcentPatrol, 15)
---missionFleetPatrol:SetWeaponType(ENUMS.WeaponFlag.Cannons)
-missionFleetPatrol:SetMissionWaypointCoord(navcentPatrol:GetRandomCoordinate())
 missionFleetPatrol:SetRequiredAssets(1)
 missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
 
