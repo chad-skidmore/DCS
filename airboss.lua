@@ -210,6 +210,9 @@ BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
 -- Weapon range of cannons has to be manually added.
 BLUE.Flotilla.DDG1:AddWeaponRange(1, 10, ENUMS.WeaponFlag.Cannons)
 
+BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
+
+
 for _,Fleet in pairs(BLUE.Fleet) do
     BlueChief:AddFleet(Fleet)
     if BlueDebug then
@@ -225,7 +228,7 @@ missionFleetPatrol:SetMissionWaypointCoord(navcentPatrol:GetRandomCoordinate())
 missionFleetPatrol:SetRequiredAssets(1)
 missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
 
-BLUE.Fleet.fifthfleet:AddMission(missionFleetPatrol)
+BlueChief:AddMission(missionFleetPatrol)
 
 
 
