@@ -56,8 +56,8 @@ abConfig.marshalRadio = 261
 abConfig.case = 1
 abConfig.cca = 50
 abConfig.skill = "Flight Student"
-abConfig.radioRelayLso = "gwlsorelay"
-abConfig.radioRelayMarshal = "gwmarshalrelay"
+abConfig.radioRelayLso = "USS Ted Stevens"
+abConfig.radioRelayMarshal = "USS Viksburg"
 
 -- No MOOSE settings menu. Comment out this line if required.
 _SETTINGS:SetPlayerMenuOff()
@@ -103,8 +103,12 @@ local airbossGW=AIRBOSS:New(abConfig.carriername, abConfig.carrieralias)
   airbossGW:Load()
   airbossGW:SetAutoSave()
   airbossGW:SetTrapSheet()
+  airbossGW:SetRadioRelayMarshal(abConfig.radioRelayMarshal)
+  airbossGW:SetRadioRelayLSO(abConfig.radioRelayLso)
   airbossGW:AddRecoveryWindow("7:00", "9:30", 1)
-airbossGW:Start()
+airbossGW:__Start(2)
+
+
 
 
 
@@ -133,12 +137,10 @@ end
 function Rescuehelo:onafterStatus(From, Event, To)
     local text=string.format("Rescue Helo Status: From %s, Event %s, To %s", From, Event, To)
     MESSAGE:New(text, 120):ToAll()
-    airbossGW:SetRadioRelayMarshal(self:GetUnitName())
 end
 
 function tanker:OnAfterStart(From,Event,To)
-  airbossGW:SetRecoveryTanker(tanker)  
-  airbossGW:SetRadioRelayLSO(self:GetUnitName())
+  airbossGW:SetRecoveryTanker(tanker)
 end
 
 --- Function called when AWACS is started.
