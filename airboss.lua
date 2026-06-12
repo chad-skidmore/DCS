@@ -183,6 +183,9 @@ BLUE.Flotilla={}--Ops.Flotilla#FLOTILLA
 BLUE.Brigade={}--Ops.Brigade#BRIGADE
 BLUE.Platoon={}
 
+local navcentPort = ZONE:New("ZonePort5thFleet")
+local navcentSpawn = ZONE:New("ZoneSpawn5thFleet")
+local navcentPatrol = ZONE:New("ZonePatrol5thFleet")
 local BlueLogisticsZones = {}
 
 local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE):FilterStart()
@@ -194,6 +197,39 @@ BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
 --RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 BlueChief:SetThreatLevelRange(1, 1000)
 BlueChief:SetConflictZones(ConflictZones)
+
+BLUE.Fleet.fifthfleet = FLEET:New("NAVCENT", "NAVCENT 5th Fleet")
+BLUE.Fleet.fifthfleet:SetPortZone(navcentPort)
+BLUE.Fleet.fifthfleet:SetSpawnZone(navcentSpawn)
+BLUE.Fleet.fifthfleet:SetPathfinding(true)
+BLUE.Fleet.fifthfleet:Start()
+
+BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 1, "DDG1")
+BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
+BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
+-- Weapon range of cannons has to be manually added.
+BLUE.Flotilla.DDG1:AddWeaponRange(1, 10, ENUMS.WeaponFlag.Cannons)
+
+for _,Fleet in pairs(US.Fleet) do
+    BlueChief:AddFleet(Fleet)
+    if BlueDebug then
+        Fleet:SetVerbosity(BlueVerbosity)
+        Fleet:SetMarker(true)
+    end
+end
+
+
+local missionFleetPatrol = AUFTRAG:NewPATROLZONE(navcentPatrol, 15)
+--missionFleetPatrol:SetWeaponType(ENUMS.WeaponFlag.Cannons)
+missionFleetPatrol:SetMissionWaypointCoord(navcentPatrol:GetRandomCoordinate())
+missionFleetPatrol:SetRequiredAssets(1)
+missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
+
+BLUE.Fleet.fifthfleet:AddMission(missionFleetPatrol)
+
+
+
+
 
 
 
@@ -214,7 +250,6 @@ local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
 RedChief:SetBorderZones(RedBorderZones)
 RedChief:SetDefcon(CHIEF.DEFCON.GREEN)
 RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
---RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 RedChief:SetThreatLevelRange(1, 1000)
 RedChief:SetConflictZones(ConflictZones)
 
@@ -262,10 +297,6 @@ ratA320:Spawn(2)
 
 
 StartRescueHelo()
--- TIMER:New(RescueheloState):Start(5, 30)
-
-
-
 
 
 
