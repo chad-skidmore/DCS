@@ -198,6 +198,45 @@ BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
 BlueChief:SetThreatLevelRange(1, 1000)
 BlueChief:SetConflictZones(ConflictZones)
 
+
+
+
+BLUE.Wing.AlDhafra = AIRWING:New("Al Dhafra AFB", "Al Dhafra AFB") --Ops.AirWing#AIRWING
+
+if BlueDebug then
+    BLUE.Wing.AlDhafra:SetVerbosity(BlueVerbosity)
+    BLUE.Wing.AlDhafra:SetMarker(true)
+end
+
+--Add Squadrons 
+BLUE.Squad.AlDhafra={}
+
+
+--AWACS
+BLUE.Squad.AlDhafra.e3=SQUADRON:New("E3", 4, "E3 AlDhafra") --Ops.Squadron#SQUADRON
+BLUE.Squad.AlDhafra.e3:AddMissionCapability({AUFTRAG.Type.AWACS, AUFTRAG.Type.ALERT5}, 100)
+BLUE.Squad.AlDhafra.e3:SetFuelLowThreshold(0.1)
+BLUE.Squad.AlDhafra.e3:SetTurnoverTime(10,20)
+BLUE.Squad.AlDhafra.e3:SetMissionRange(500)
+BLUE.Squad.AlDhafra.e3:SetSkill(AI.Skill.AVERAGE)
+BLUE.Squad.AlDhafra.e3:SetRadio(251)
+BLUE.Squad.AlDhafra.e3:SetCallsign(CALLSIGN.AWACS.Darkstar,1)
+BLUE.Squad.AlDhafra.e3:SetTakeoffHot()
+
+
+-- Add Squads to AlDhafra Airwing
+for _,squad in pairs(BLUE.Squad.AlDhafra) do
+    BLUE.Wing.AlDhafra:AddSquadron(squad)
+end
+
+
+-- Add Payloads
+BLUE.Wing.AlDhafra:NewPayload("E3",-1, {AUFTRAG.Type.AWACS},100)
+
+
+
+
+
 BLUE.Fleet.fifthfleet = FLEET:New("NAVCENT", "NAVCENT 5th Fleet")
 BLUE.Fleet.fifthfleet:SetPortZone(navcentPort)
 BLUE.Fleet.fifthfleet:SetSpawnZone(navcentSpawn)
@@ -212,6 +251,20 @@ BLUE.Flotilla.DDG1:AddWeaponRange(1, 10, ENUMS.WeaponFlag.Cannons)
 BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
 
 
+
+-- +-----------------------------+
+-- |       BLUE ACTIVATION       |
+-- +-----------------------------+
+-- Add squadrons to airwing.
+for _,Wing in pairs(BLUE.Wing) do
+    BlueChief:AddAirwing(Wing)
+
+    if BlueDebug then
+        Wing:SetVerbosity(BlueVerbosity)
+        Wing:SetMarker(true)
+    end
+end
+
 for _,Fleet in pairs(BLUE.Fleet) do
     BlueChief:AddFleet(Fleet)
     if BlueDebug then
@@ -219,6 +272,14 @@ for _,Fleet in pairs(BLUE.Fleet) do
         Fleet:SetMarker(true)
     end
 end
+
+
+
+--AWACS
+local BlueAWACS = AUFTRAG:NewAWACS(BlueLogisticsZones.AwacsZone:GetCoordinate(), 30000, 300, 180, 20)
+      BlueAWACS:SetRepeat(99)
+      BlueAWACS:SetName("Blue AWACS")
+      BlueChief:AddMission(BlueAWACS)
 
 
 local missionFleetPatrol = AUFTRAG:NewPATROLZONE(navcentPatrol, 15)
