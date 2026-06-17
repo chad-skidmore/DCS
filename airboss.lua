@@ -285,12 +285,12 @@ local BlueAWACS = AUFTRAG:NewAWACS(BlueLogisticsZones.AwacsZone:GetCoordinate(),
       BlueAWACS:SetName("Blue AWACS")
       BlueChief:AddMission(BlueAWACS)
 
--- local missionFleetPatrol = AUFTRAG:NewPATROLZONE(navcentPatrol, 15)
---       missionFleetPatrol:SetRequiredAssets(1)
---       missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
---       BlueChief:AddMission(missionFleetPatrol)
+local missionFleetPatrol = AUFTRAG:NewPATROLZONE(navcentPatrol, 15)
+      missionFleetPatrol:SetRequiredAssets(1)
+      missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
+      BlueChief:AddMission(missionFleetPatrol)
 
-local RedEwrGroup = GROUP:FindByName("Red EWR")
+local RedEwrGroup = UNIT:FindByName("RedEWR-1")
 local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup)
       missionFleetPatrol:SetRequiredAssets(1)
       missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
