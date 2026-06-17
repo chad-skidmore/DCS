@@ -190,6 +190,7 @@ local navcentPatrol = ZONE:New("ZonePatrol5thFleet")
 
 local BlueLogisticsZones = {}
 BlueLogisticsZones.AwacsZone= ZONE:New("AwacsZone")
+BlueLogisticsZones.missleZone = ZONE:New("missleZone")
 
 
 local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE):FilterStart()
@@ -305,9 +306,9 @@ local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
       missionFleetPatrol:SetRequiredAssets(2, 2)
       missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
       missionFleetPatrol:SetWeaponType(ENUMS.WeaponFlag.CruiseMissile)
+      missionFleetPatrol:SetMissionWaypointCoord(BlueLogisticsZones.missleZone:GetCoordinate())
+      missionFleetPatrol:SetMissionSpeed(20)
       BlueChief:AddMission(missionFleetPatrol)
-
-
 
 
 
