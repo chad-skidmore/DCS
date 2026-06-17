@@ -250,8 +250,7 @@ BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 1, "DDG1")
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 90)
-BLUE.Flotilla.DDG1:AddWeaponRange(1, 10, ENUMS.WeaponFlag.Cannons)
-
+--BLUE.Flotilla.DDG1:AddWeaponRange(1, 10, ENUMS.WeaponFlag.Cannons)
 BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
 
 
