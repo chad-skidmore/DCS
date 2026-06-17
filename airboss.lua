@@ -371,23 +371,23 @@ myredmantis:Start()
 
 
 
-local rat737 = RAT:New("Rat-737")
-rat737:SetTakeoff("cold")
-rat737:Spawn(2)
+-- local rat737 = RAT:New("Rat-737")
+-- rat737:SetTakeoff("cold")
+-- rat737:Spawn(2)
 
-local rat757 = RAT:New("Rat-757")
-rat757:SetTakeoff("cold")
-rat757:Spawn(2)
+-- local rat757 = RAT:New("Rat-757")
+-- rat757:SetTakeoff("cold")
+-- rat757:Spawn(2)
 
-local ratA320 = RAT:New("Rat-A320")
-ratA320:SetTakeoff("cold")
-ratA320:Spawn(2)
-
-
+-- local ratA320 = RAT:New("Rat-A320")
+-- ratA320:SetTakeoff("cold")
+-- ratA320:Spawn(2)
 
 
 
-StartRescueHelo()
+
+
+--StartRescueHelo()
 
 
 
