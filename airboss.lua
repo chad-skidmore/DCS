@@ -14,13 +14,13 @@ if RedDebug or BlueDebug then
     trigger.action.outText('DEBUG IS ACTIVE', 10)
     BASE:TraceLevel(4)
     BASE:TraceClass("AUFTRAG")
-    BASE:TraceClass("AIRWING")
-    BASE:TraceClass("BRIGADE")
+    --BASE:TraceClass("AIRWING")
+    --BASE:TraceClass("BRIGADE")
     BASE:TraceClass("CHIEF")
     BASE:TraceClass("FLOTILLA")
     BASE:TraceClass("FLEET")
     BASE:TraceOnOff(true)
-    BASE:TraceClass("AIRBOSS")
+    --BASE:TraceClass("AIRBOSS")
 end
 
 
