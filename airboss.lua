@@ -186,7 +186,10 @@ BLUE.Platoon={}
 local navcentPort = ZONE:New("ZonePort5thFleet")
 local navcentSpawn = ZONE:New("ZoneSpawn5thFleet")
 local navcentPatrol = ZONE:New("ZonePatrol5thFleet")
+
 local BlueLogisticsZones = {}
+BlueLogisticsZones.AwacsZone= ZONE:New("AwacsZone")
+local AwacsCoord = BlueLogisticsZones.AwacsZone:GetCoordinate()
 
 local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE):FilterStart()
 local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief")
