@@ -12,13 +12,14 @@ BlueVerbosity = 6
 
 if RedDebug or BlueDebug then
     trigger.action.outText('DEBUG IS ACTIVE', 10)
-    BASE:TraceLevel(3)
+    BASE:TraceLevel(4)
     BASE:TraceClass("AUFTRAG")
     BASE:TraceClass("AIRWING")
     BASE:TraceClass("BRIGADE")
     BASE:TraceClass("CHIEF")
+    BASE:TraceClass("FLOTILLA")
+    BASE:TraceClass("FLEET")
     BASE:TraceOnOff(true)
-    BASE:TraceLevel(3)
     BASE:TraceClass("AIRBOSS")
 end
 
