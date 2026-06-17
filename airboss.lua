@@ -189,7 +189,7 @@ local navcentPatrol = ZONE:New("ZonePatrol5thFleet")
 
 local BlueLogisticsZones = {}
 BlueLogisticsZones.AwacsZone= ZONE:New("AwacsZone")
-local AwacsCoord = BlueLogisticsZones.AwacsZone:GetCoordinate()
+
 
 local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE):FilterStart()
 local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief")
@@ -249,6 +249,7 @@ BLUE.Fleet.fifthfleet:Start()
 BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 1, "DDG1")
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
+BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 90)
 BLUE.Flotilla.DDG1:AddWeaponRange(1, 10, ENUMS.WeaponFlag.Cannons)
 
 BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
@@ -284,14 +285,16 @@ local BlueAWACS = AUFTRAG:NewAWACS(BlueLogisticsZones.AwacsZone:GetCoordinate(),
       BlueAWACS:SetName("Blue AWACS")
       BlueChief:AddMission(BlueAWACS)
 
+-- local missionFleetPatrol = AUFTRAG:NewPATROLZONE(navcentPatrol, 15)
+--       missionFleetPatrol:SetRequiredAssets(1)
+--       missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
+--       BlueChief:AddMission(missionFleetPatrol)
 
-local missionFleetPatrol = AUFTRAG:NewPATROLZONE(navcentPatrol, 15)
-missionFleetPatrol:SetRequiredAssets(1)
-missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
-
-BlueChief:AddMission(missionFleetPatrol)
-
-
+local RedEwrGroup = GROUP:FindByName("Red EWR")
+local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup)
+      missionFleetPatrol:SetRequiredAssets(1)
+      missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
+      BlueChief:AddMission(missionFleetPatrol)
 
 
 
