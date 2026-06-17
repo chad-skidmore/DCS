@@ -308,24 +308,6 @@ local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
       BlueChief:AddMission(missionFleetPatrol)
 
 
--- function BLUE.Fleet.fifthfleet:OnAfterNavyOnMission(From, Event, To, NavyGroup, Mission)
---   if Mission == missionFleetPatrol then
---     MESSAGE:New(
---       string.format("%s is en route to launch TLAMs at %s.", NavyGroup:GetName(), TARGET_GROUP_NAME),
---       15
---     ):ToCoalition(coalition.side.BLUE)
---   end
--- end
- 
--- function missionFleetPatrol:OnAfterSuccess(From, Event, To)
---   MESSAGE:New("TLAM strike successful - EWR Radar Site destroyed.", 20)
---     :ToCoalition(coalition.side.BLUE)
--- end
- 
--- function missionFleetPatrol:OnAfterFailed(From, Event, To)
---   MESSAGE:New("TLAM strike failed - EWR Radar Site still active.", 20)
---     :ToCoalition(coalition.side.BLUE)
--- end
 
 
 
