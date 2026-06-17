@@ -247,7 +247,7 @@ BLUE.Fleet.fifthfleet:SetSpawnZone(navcentSpawn)
 BLUE.Fleet.fifthfleet:SetPathfinding(true)
 BLUE.Fleet.fifthfleet:Start()
 
-BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 6, "DDG1")
+BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 2, "DDG1")
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
@@ -294,6 +294,12 @@ local BlueAWACS = AUFTRAG:NewAWACS(BlueLogisticsZones.AwacsZone:GetCoordinate(),
 --       BlueChief:AddMission(missionFleetPatrol)
 
 local RedEwrGroup = UNIT:FindByName("RedEWR-1")
+if not RedEwrGroup then
+  env.error(string.format(
+    "[NAVAL STRIKE] Target group '%s' not found - check the name in the Mission Editor.",
+    TARGET_GROUP_NAME))
+  return
+end
 -- local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 1)
 local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup, 18)
       missionFleetPatrol:SetRequiredAssets(2, 2)
