@@ -248,8 +248,8 @@ BLUE.Fleet.fifthfleet:SetPathfinding(true)
 BLUE.Fleet.fifthfleet:Start()
 
 BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 2, "DDG1")
---BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
---BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
+BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
+BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
 BLUE.Flotilla.DDG1:AddWeaponRange(20, 700, ENUMS.WeaponFlag.CruiseMissle)
 BLUE.Flotilla.DDG1:AddWeaponRange(2.7, 13, ENUMS.WeaponFlag.Cannons)
@@ -300,8 +300,8 @@ if not RedEwrGroup then
     TARGET_GROUP_NAME))
   return
 end
--- local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 1)
-local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup, 18)
+local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
+--local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup, 18)
       missionFleetPatrol:SetRequiredAssets(2, 2)
       missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
       missionFleetPatrol:SetWeaponType(ENUMS.WeaponFlag.CruiseMissile)
