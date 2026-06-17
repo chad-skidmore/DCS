@@ -249,8 +249,11 @@ BLUE.Fleet.fifthfleet:Start()
 BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 1, "DDG1")
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
-BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 90)
---BLUE.Flotilla.DDG1:AddWeaponRange(1, 10, ENUMS.WeaponFlag.Cannons)
+BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
+BLUE.Flotilla.DDG1:AddWeaponRange(20, 700, ENUMS.WeaponFlag.CruiseMissle)
+BLUE.Flotilla.DDG1:AddWeaponRange(2.7, 13, ENUMS.WeaponFlag.Cannons)
+BLUE.Flotilla.DDG1:SetSkill("Excellent")
+BLUE.Flotilla.DDG1:SetRadio(251.00, radio.modulation.AM)
 BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
 
 
@@ -290,12 +293,32 @@ local BlueAWACS = AUFTRAG:NewAWACS(BlueLogisticsZones.AwacsZone:GetCoordinate(),
 --       BlueChief:AddMission(missionFleetPatrol)
 
 local RedEwrGroup = UNIT:FindByName("RedEWR-1")
-local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup)
+-- local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 1)
+local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup, 18)
       missionFleetPatrol:SetRequiredAssets(1)
       missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
-      missionFleetPatrol:SetWeaponType(ENUMS.WeaponFlag.AnyAutonomousMissile)
+      missionFleetPatrol:SetWeaponType(ENUMS.WeaponFlag.CruiseMissile)
       BlueChief:AddMission(missionFleetPatrol)
 
+
+function BLUE.Fleet.fifthfleet:OnAfterNavyOnMission(From, Event, To, NavyGroup, Mission)
+  if Mission == missionFleetPatrol then
+    MESSAGE:New(
+      string.format("%s is en route to launch TLAMs at %s.", NavyGroup:GetName(), TARGET_GROUP_NAME),
+      15
+    ):ToCoalition(coalition.side.BLUE)
+  end
+end
+ 
+function missionFleetPatrol:OnAfterSuccess(From, Event, To)
+  MESSAGE:New("TLAM strike successful - EWR Radar Site destroyed.", 20)
+    :ToCoalition(coalition.side.BLUE)
+end
+ 
+function missionFleetPatrol:OnAfterFailed(From, Event, To)
+  MESSAGE:New("TLAM strike failed - EWR Radar Site still active.", 20)
+    :ToCoalition(coalition.side.BLUE)
+end
 
 
 
