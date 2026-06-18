@@ -321,14 +321,14 @@ local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
       missionFleetPatrol:SetMissionSpeed(30)
       BlueChief:AddMission(missionFleetPatrol)
 
-local subStrike = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
---local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup, 18)
-      subStrike:SetRequiredAssets(1, 1)
-      subStrike:AssignCohort(BLUE.Flotilla.DDG1)
-      subStrike:SetWeaponType(ENUMS.WeaponFlag.CruiseMissile)
-      subStrike:SetMissionWaypointCoord(BlueLogisticsZones.missleZone:GetCoordinate())
-      subStrike:SetMissionSpeed(20)
-      BlueChief:AddMission(missionFleetPatrol)
+-- local subStrike = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
+-- --local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup, 18)
+--       subStrike:SetRequiredAssets(1, 1)
+--       subStrike:AssignCohort(BLUE.Flotilla.DDG1)
+--       subStrike:SetWeaponType(ENUMS.WeaponFlag.CruiseMissile)
+--       subStrike:SetMissionWaypointCoord(BlueLogisticsZones.missleZone:GetCoordinate())
+--       subStrike:SetMissionSpeed(20)
+--       BlueChief:AddMission(missionFleetPatrol)
 
 
 
@@ -363,13 +363,24 @@ RED.Fleet.BandarLengeh:Start()
 
 RED.Flotilla.fastattack = FLOTILLA:New("RedFastAttack", 12, "FastAttack")
 RED.Flotilla.fastattack:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
-RED.Flotilla.fastattack:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
+--RED.Flotilla.fastattack:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
+RED.Flotilla.fastattack:AddMissionCapability({AUFTRAG.Type.ONGUARD}, 60)
 RED.Flotilla.fastattack:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
 -- RED.Flotilla.fastattack:AddWeaponRange(20, 700, ENUMS.WeaponFlag.CruiseMissle)
 -- RED.Flotilla.fastattack:AddWeaponRange(2.7, 13, ENUMS.WeaponFlag.Cannons)
 RED.Flotilla.fastattack:SetSkill("Excellent")
-RED.Flotilla.fastattack:SetRadio(251.00, radio.modulation.AM)
+RED.Flotilla.fastattack:SetRadio(256.00, radio.modulation.AM)
 RED.Fleet.BandarLengeh:AddFlotilla(RED.Flotilla.fastattack)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -394,6 +405,14 @@ myredmantis:AddZones(RedBorderZones,BlueBorderZones,ConflictZones)
 myredmantis:Start()
 
 
+local rigPatrol = AUFTRAG:NewONGUARD(RedStrategicZones.Platforms:GetCoordinate())
+--local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup, 18)
+      rigPatrol:SetRequiredAssets(2, 3)
+      rigPatrol:AssignCohort(RED.Flotilla.fastattack)
+      rigPatrol:SetWeaponType(ENUMS.WeaponFlag.AnyWeapon)
+      rigPatrol:SetMissionWaypointCoord(BlueLogisticsZones.missleZone2:GetCoordinate())
+      rigPatrol:SetMissionSpeed(30)
+      RedChief:AddMission(rigPatrol)
 
 
 -- local rat737 = RAT:New("Rat-737")
