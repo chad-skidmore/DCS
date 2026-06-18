@@ -258,7 +258,7 @@ BLUE.Flotilla.DDG1:SetSkill("Excellent")
 BLUE.Flotilla.DDG1:SetRadio(251.00, radio.modulation.AM)
 BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
 
-BLUE.Flotilla.Sub = FLOTILLA:New("DDG", 2, "DDG1")
+BLUE.Flotilla.Sub = FLOTILLA:New("Sub", 2, "Sub1")
 BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
 BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
 BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
