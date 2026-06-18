@@ -211,6 +211,8 @@ BlueChief:SetConflictZones(ConflictZones)
 BlueChief:AddStrategicZone(BlueStrategicZones.Platforms, nil , 1)
 BlueChief:AddAttackZone(BlueStrategicZones.Platforms)
 
+BlueChief:SetResponseOnTarget(1, 2, 0, TARGET.Category.NAVAL, AUFTRAG.Type.NAVELENGAGEMENT)
+
 
 BLUE.Wing.AlDhafra = AIRWING:New("Al Dhafra AFB", "Al Dhafra AFB") --Ops.AirWing#AIRWING
 
