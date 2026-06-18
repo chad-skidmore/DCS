@@ -197,6 +197,8 @@ BlueLogisticsZones.missleZone2 = ZONE:New("missleZone")
 local BlueStrategicZones = {}
 BlueStrategicZones.Platforms = OPSZONE:New(ZONE:FindByName("StrategicZone-1"), coalition.side.RED)
 
+BlueChief:AddAttackZone(BlueStrategicZones.Platforms)
+
 local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE):FilterStart()
 local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief")
 
@@ -252,7 +254,7 @@ BLUE.Fleet.fifthfleet:SetSpawnZone(navcentSpawn)
 BLUE.Fleet.fifthfleet:SetPathfinding(true)
 BLUE.Fleet.fifthfleet:Start()
 
-BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 2, "DDG1")
+BLUE.Flotilla.DDG1 = FLOTILLA:New("DDG", 6, "DDG1")
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
 BLUE.Flotilla.DDG1:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
