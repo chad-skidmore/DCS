@@ -341,7 +341,10 @@ RED.Flotilla={}--Ops.Flotilla#FLOTILLA
 RED.Brigade={}--Ops.Brigade#BRIGADE
 RED.Platoon={}
 
+local ZoneBandarLengeh = ZONE:New("ZoneBandarLengeh")
+
 local RedLogisticsZones = {}
+
 local RedStrategicZones = {}
 RedStrategicZones.Platforms = OPSZONE:New(ZONE:FindByName("StrategicZone-1"), coalition.side.RED)
 
