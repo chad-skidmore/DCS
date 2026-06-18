@@ -307,7 +307,7 @@ local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
       missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
       missionFleetPatrol:SetWeaponType(ENUMS.WeaponFlag.CruiseMissile)
       missionFleetPatrol:SetMissionWaypointCoord(BlueLogisticsZones.missleZone:GetCoordinate())
-      missionFleetPatrol:SetMissionSpeed(20)
+      missionFleetPatrol:SetMissionSpeed(30)
       BlueChief:AddMission(missionFleetPatrol)
 
 
