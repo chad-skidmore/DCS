@@ -13,12 +13,13 @@ BlueVerbosity = 6
 if RedDebug or BlueDebug then
     trigger.action.outText('DEBUG IS ACTIVE', 10)
     BASE:TraceLevel(4)
-    BASE:TraceClass("AUFTRAG")
+    BASE:TraceClass("AIRBOSS")
+    --BASE:TraceClass("AUFTRAG")
     --BASE:TraceClass("AIRWING")
     --BASE:TraceClass("BRIGADE")
-    BASE:TraceClass("CHIEF")
-    BASE:TraceClass("FLOTILLA")
-    BASE:TraceClass("FLEET")
+    --BASE:TraceClass("CHIEF")
+    --BASE:TraceClass("FLOTILLA")
+    --BASE:TraceClass("FLEET")
     BASE:TraceOnOff(true)
     --BASE:TraceClass("AIRBOSS")
 end
@@ -166,9 +167,9 @@ function StartRescueHelo()
     end
 end
 
-local RecoveryMenu=MENU_MISSION:New("Recovery Menu")--#MENU
-local RecoveryMenu1 = MENU_MISSION_COMMAND:New("Begin Recovery", RecoveryMenu, BeginRecovery)--#MENU
-local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, StopRecovery)--#MENU
+-- local RecoveryMenu=MENU_MISSION:New("Recovery Menu")--#MENU
+-- local RecoveryMenu1 = MENU_MISSION_COMMAND:New("Begin Recovery", RecoveryMenu, BeginRecovery)--#MENU
+-- local RecoveryMenu2 = MENU_MISSION_COMMAND:New("Stop Recovery", RecoveryMenu, StopRecovery)--#MENU
 
 
 
@@ -193,6 +194,9 @@ BlueLogisticsZones.AwacsZone= ZONE:New("AwacsZone")
 BlueLogisticsZones.missleZone = ZONE:New("missleZone")
 BlueLogisticsZones.missleZone2 = ZONE:New("missleZone")
 
+local BlueStrategicZones = {}
+BlueStrategicZones.Platforms = OPSZONE:New(ZONE:FindByName("StrategicZone-1"), coalition.side.RED)
+
 local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE):FilterStart()
 local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief")
 
@@ -202,7 +206,7 @@ BlueChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
 --RedChief:SetStrategy(CHIEF.Strategy.AGGRESSIVE)
 BlueChief:SetThreatLevelRange(1, 1000)
 BlueChief:SetConflictZones(ConflictZones)
-
+BlueChief:AddStrategicZone(BlueStrategicZones.Platforms, nil , 1)
 
 
 
@@ -338,6 +342,8 @@ RED.Brigade={}--Ops.Brigade#BRIGADE
 RED.Platoon={}
 
 local RedLogisticsZones = {}
+local RedStrategicZones = {}
+RedStrategicZones.Platforms = OPSZONE:New(ZONE:FindByName("StrategicZone-1"), coalition.side.RED)
 
 local RedIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.RED):FilterStart()
 local RedChief = CHIEF:New(coalition.side.RED, RedIntelProviders, "Red Chief")
@@ -347,8 +353,23 @@ RedChief:SetDefcon(CHIEF.DEFCON.GREEN)
 RedChief:SetStrategy(CHIEF.Strategy.DEFENSIVE)
 RedChief:SetThreatLevelRange(1, 1000)
 RedChief:SetConflictZones(ConflictZones)
+RedChief:AddStrategicZone(RedStrategicZones.Platforms, nil , 1)
 
+RED.Fleet.BandarLengeh = FLEET:New("Bandar Lengeh", "Bandar Lengeh")
+RED.Fleet.BandarLengeh:SetPortZone(ZoneBandarLengeh)
+RED.Fleet.BandarLengeh:SetSpawnZone(ZoneBandarLengeh)
+RED.Fleet.BandarLengeh:SetPathfinding(true)
+RED.Fleet.BandarLengeh:Start()
 
+RED.Flotilla.fastattack = FLOTILLA:New("RedFastAttack", 12, "FastAttack")
+RED.Flotilla.fastattack:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
+RED.Flotilla.fastattack:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
+RED.Flotilla.fastattack:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
+-- RED.Flotilla.fastattack:AddWeaponRange(20, 700, ENUMS.WeaponFlag.CruiseMissle)
+-- RED.Flotilla.fastattack:AddWeaponRange(2.7, 13, ENUMS.WeaponFlag.Cannons)
+RED.Flotilla.fastattack:SetSkill("Excellent")
+RED.Flotilla.fastattack:SetRadio(251.00, radio.modulation.AM)
+RED.Fleet.BandarLengeh:AddFlotilla(RED.Flotilla.fastattack)
 
 
 
