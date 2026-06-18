@@ -262,14 +262,14 @@ BLUE.Flotilla.DDG1:SetSkill("Excellent")
 BLUE.Flotilla.DDG1:SetRadio(251.00, radio.modulation.AM)
 BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
 
-BLUE.Flotilla.Sub = FLOTILLA:New("Sub", 2, "Sub1")
-BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
-BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
-BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
-BLUE.Flotilla.Sub:AddWeaponRange(20, 700, ENUMS.WeaponFlag.CruiseMissle)
-BLUE.Flotilla.Sub:SetSkill("Excellent")
-BLUE.Flotilla.Sub:SetRadio(251.00, radio.modulation.AM)
-BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.Sub)
+-- BLUE.Flotilla.Sub = FLOTILLA:New("Sub", 2, "Sub1")
+-- BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
+-- BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
+-- BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
+-- BLUE.Flotilla.Sub:AddWeaponRange(20, 700, ENUMS.WeaponFlag.CruiseMissle)
+-- BLUE.Flotilla.Sub:SetSkill("Excellent")
+-- BLUE.Flotilla.Sub:SetRadio(251.00, radio.modulation.AM)
+-- BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.Sub)
 
 -- +-----------------------------+
 -- |       BLUE ACTIVATION       |
