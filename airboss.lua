@@ -191,7 +191,7 @@ local navcentPatrol = ZONE:New("ZonePatrol5thFleet")
 local BlueLogisticsZones = {}
 BlueLogisticsZones.AwacsZone= ZONE:New("AwacsZone")
 BlueLogisticsZones.missleZone = ZONE:New("missleZone")
-
+BlueLogisticsZones.missleZone2 = ZONE:New("missleZone")
 
 local BlueIntelProviders = SET_GROUP:New():FilterCoalitions(coalition.side.BLUE):FilterStart()
 local BlueChief = CHIEF:New(coalition.side.BLUE, BlueIntelProviders, "Blue Chief")
@@ -258,7 +258,14 @@ BLUE.Flotilla.DDG1:SetSkill("Excellent")
 BLUE.Flotilla.DDG1:SetRadio(251.00, radio.modulation.AM)
 BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.DDG1)
 
-
+BLUE.Flotilla.Sub = FLOTILLA:New("DDG", 2, "DDG1")
+BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.PATROLZONE}, 60)
+BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.ARTY}, 80)
+BLUE.Flotilla.Sub:AddMissionCapability({AUFTRAG.Type.NAVELENGAGEMENT}, 100)
+BLUE.Flotilla.Sub:AddWeaponRange(20, 700, ENUMS.WeaponFlag.CruiseMissle)
+BLUE.Flotilla.Sub:SetSkill("Excellent")
+BLUE.Flotilla.Sub:SetRadio(251.00, radio.modulation.AM)
+BLUE.Fleet.fifthfleet:AddFlotilla(BLUE.Flotilla.Sub)
 
 -- +-----------------------------+
 -- |       BLUE ACTIVATION       |
@@ -306,10 +313,18 @@ local missionFleetPatrol = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
       missionFleetPatrol:SetRequiredAssets(2, 2)
       missionFleetPatrol:AssignCohort(BLUE.Flotilla.DDG1)
       missionFleetPatrol:SetWeaponType(ENUMS.WeaponFlag.CruiseMissile)
-      missionFleetPatrol:SetMissionWaypointCoord(BlueLogisticsZones.missleZone:GetCoordinate())
+      missionFleetPatrol:SetMissionWaypointCoord(BlueLogisticsZones.missleZone2:GetCoordinate())
       missionFleetPatrol:SetMissionSpeed(30)
       BlueChief:AddMission(missionFleetPatrol)
 
+local subStrike = AUFTRAG:NewARTY(RedEwrGroup:GetCoordinate(), 2)
+--local missionFleetPatrol = AUFTRAG:NewNAVALENGAGEMENT(RedEwrGroup, 18)
+      subStrike:SetRequiredAssets(1, 1)
+      subStrike:AssignCohort(BLUE.Flotilla.DDG1)
+      subStrike:SetWeaponType(ENUMS.WeaponFlag.CruiseMissile)
+      subStrike:SetMissionWaypointCoord(BlueLogisticsZones.missleZone:GetCoordinate())
+      subStrike:SetMissionSpeed(20)
+      BlueChief:AddMission(missionFleetPatrol)
 
 
 
